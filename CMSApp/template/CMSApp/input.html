@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {{error}}
+    <form method="post"> {% csrf_token %}
+        Name: <input type="text" name="name"> <br>
+        Mobile Number: <input type="text" name="mobile"> <br>
+        Location: <input type="text" name="location"> <br>
+        Type of Assistance :<br>
+        <input type="radio" name="type" value="EA" checked="checked">
+        Emergency Ambulance <br>
+        <input type="radio" name="type" value="RE">
+        Rescue and Evacuation <br>
+        <input type="radio" name="type" value="FF">
+        Fire-fighting <br>
+        <input type="radio" name="type" value="GL">
+        Gas Leak Control <br>
+        <input type="submit" name="Submit">
+    </form>
+{% endblock %}

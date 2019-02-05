@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!<br>
+        <button onclick="window.location.href='{% url 'logout' %}'" class="ui primary button">
+            Logout
+        </button>
+        {% else %}
+        You are not logged in
+        <br>
+        <button onclick="window.location.href='{% url 'login' %}'" class="ui primary button">
+            Login
+        </button>
+    {% endif %}
+{% endblock %}
