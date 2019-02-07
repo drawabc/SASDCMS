@@ -14,6 +14,7 @@ class Report(models.Model):
     name = models.CharField(max_length=120)
     mobile = models.CharField(max_length=12)
     location = models.CharField(max_length=500)
+    postal_code = models.CharField(max_length=10)
     type = models.CharField(max_length=2, choices=ASSISTANCE_TYPE_CHOICES)
     time = models.DateTimeField(default=datetime.datetime.now(tz=tz))
 

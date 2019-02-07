@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q={{ postal }}&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        </div>
+        <style>.mapouter{text-align:right;height:500px;width:600px;}.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style>
+    </div>
+    {% for report in report_list %}
+        <a href="{% url 'home' %}?postal={{ report.postal_code }}">Report {{ report.pk }}</a> <br>
+    {% endfor %}
     {% if user.is_authenticated %}
         Hi {{ user.username }}!<br>
         <button onclick="window.location.href='{% url 'logout' %}'" class="ui primary button">
