@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
 from django.urls import reverse
+from django.core import serializers
+import json
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
@@ -10,11 +12,19 @@ def home(request):
         postal = request.GET["postal"]
     except:
         if len(report_list)==0:
-            postal = 639218
+            postal = request.GET["postal"]
         else:
-            postal = report_list[len(report_list)-1].postal_code
+            postal = -1
+    postal = json.dumps(postal)
     report_list = Report.objects.all()
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'postal' : postal})
+    markers = [];
+    for report in report_list:
+        markers.append({"name" : report.name, "postal" : report.postal_code})
+    markers = json.dumps(markers)
+    print(markers)
+
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'postal' : postal, 'markers' : markers})
+
 
 @login_required
 def input(request):

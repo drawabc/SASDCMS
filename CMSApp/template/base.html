@@ -3,6 +3,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -12,9 +13,43 @@
         <title>
             CMS App
         </title>
+        <style>
+          #myMap {
+            height: 600px;
+            width: 100%;
+          }
+        </style>
     </head>
     <body>
-        {% block content %}
-        {% endblock content %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <a class="navbar-brand" href="#">CMS</a>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+                                <a class="nav-item nav-link" href="{% url 'input' %}">Input</a>
+                            </div>
+                        </div>
+                        {% if user.is_authenticated %}
+                        Hi {{ user.username }}!&nbsp;
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'logout' %}'" class="ui primary button">
+                            Logout
+                        </button>
+                        {% else %}
+                        You are not logged in
+                        <br>
+                        <button onclick="window.location.href='{% url 'login' %}'" class="ui primary button">
+                            Login
+                        </button>
+                    {% endif %}
+                    </nav>
+                </div>
+            </div>
+            <div>&nbsp;</div>
+            {% block content %}
+            {% endblock content %}
+        </div>
     </body>
 </html>

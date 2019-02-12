@@ -1,60 +1,116 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col" align="right">
+    <div class="row">
+        <div class="col-md">
+            <div id="myMap"></div>
+            <script>
+                        var map;
+                        var markers = {{ markers|safe }};
+                        var address = {{ postal|safe }};
+                        var i;
+                        var initial = {lat: 1.3521 , lng:  103.8198};
+                        function initMap() {
+                            var geocoder;
+                            map = new google.maps.Map(document.getElementById('myMap'), {
+                                center: {lat: 1.3521 , lng:  103.8198},
+                                zoom: 11
+                            });
+                            var infowindow = new google.maps.InfoWindow();
+                            function CenterControl(controlDiv, map) {
+                                // Set CSS for the control border.
+                                var controlUI = document.createElement('div');
+                                controlUI.style.backgroundColor = '#fff';
+                                controlUI.style.border = '2px solid #fff';
+                                controlUI.style.borderRadius = '3px';
+                                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                                controlUI.style.cursor = 'pointer';
+                                controlUI.style.marginBottom = '22px';
+                                controlUI.style.textAlign = 'center';
+                                controlUI.title = 'Click to recenter the map';
+                                controlDiv.appendChild(controlUI);
 
-                {% if user.is_authenticated %}
-                    Hi {{ user.username }}!
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'logout' %}'" class="ui primary button">
-                        Logout
-                    </button>
-                    {% else %}
-                    You are not logged in
-                    <br>
-                    <button onclick="window.location.href='{% url 'login' %}'" class="ui primary button">
-                        Login
-                    </button>
-                {% endif %}
-            </div>
+                                // Set CSS for the control interior.
+                                var controlText = document.createElement('div');
+                                controlText.style.color = 'rgb(25,25,25)';
+                                controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+                                controlText.style.fontSize = '16px';
+                                controlText.style.lineHeight = '38px';
+                                controlText.style.paddingLeft = '5px';
+                                controlText.style.paddingRight = '5px';
+                                controlText.innerHTML = 'Center Map';
+                                controlUI.appendChild(controlText);
 
+                                // Setup the click event listeners: simply set the map to Chicago.
+                                controlUI.addEventListener('click', function() {
+                                    map.setCenter(initial);
+                                    map.setZoom(11);
+                                });
+
+                             }
+                            geocoder =  new google.maps.Geocoder();
+                            for(mark in markers){
+                                console.log(mark);
+                                geocoder.geocode({'address': "Singapore" + markers[mark]["postal"]}, function(results, status) {
+                                    if (status === 'OK'){
+                                        var marker = new google.maps.Marker({
+                                            position: results[0].geometry.location,
+                                            map: map,
+                                            title: markers[mark]["name"]
+                                        });
+                                    }
+                                    else{
+                                        console.log(status);
+                                    }
+                                });
+
+                            }
+
+                            //part of center map button
+                            var centerControlDiv = document.createElement('div');
+                            var centerControl = new CenterControl(centerControlDiv, map);
+
+                            centerControlDiv.index = 1;
+                            map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+                            //move center to selected report
+                            geocoder.geocode({'address': "Singapore" + address }, function(results, status) {
+                                    if (status === 'OK'){
+                                        map.setCenter(results[0].geometry.location);
+                                        map.setZoom(12);
+                                    }
+                                    else{
+                                        console.log(status);
+                                    }
+                            });
+                        }
+                    </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap"></script>
         </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="mapouter">
-                    <div class="gmap_canvas">
-                        <iframe width="720" height="600" id="gmap_canvas" src="https://maps.google.com/maps?q=S {{ postal }}&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        <div class="col-sm">
+            <ul class="list group">
+                {% for report in report_list %}
+                <a href="{% url 'home' %}?postal={{ report.postal_code }}" class="list-group-item list-group-item-action" style="width: 60%;">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ report.name }}</h5>
+                        <small>{{ report.time.date }}</small>
                     </div>
-                    <style>.mapouter{text-align:right;height:500px;width:600px;}.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style>
-                </div>
-            </div>
-            <div class="col-sm">
-                <ul class="list group">
-                    {% for report in report_list %}
-                        <a href="{% url 'home' %}?postal={{ report.postal_code }}" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Report {{ report.pk }}</h5>
-                                <small>{{ report.time.date }}</small>
-                            </div>
-                            <p class="mb-1"> {{ report.name }} {{ report.mobile }} {{ report.postal_code }}</p>
-                            {% ifequal report.type "FF" %}
-                                <small> Fire-fighting </small>
-                            {% endifequal %}
-                            {% ifequal report.type "EA" %}
-                                <small> Emergency Ambulance </small>
-                            {% endifequal %}
-                            {% ifequal report.type "RE" %}
-                                <small> Rescue & Evacuation </small>
-                            {% endifequal %}
-                            {% ifequal report.type "GL" %}
-                                <small> Gas Leak Control </small>
-                            {% endifequal %}
-                        </a>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-sm"></div>
+                    <p class="mb-1">{{ report.mobile }} @ {{ report.postal_code }}</p>
+                    {% ifequal report.type "FF" %}
+                        <small> Fire-fighting </small>
+                    {% endifequal %}
+                    {% ifequal report.type "EA" %}
+                        <small> Emergency Ambulance </small>
+                    {% endifequal %}
+                    {% ifequal report.type "RE" %}
+                        <small> Rescue & Evacuation </small>
+                    {% endifequal %}
+                    {% ifequal report.type "GL" %}
+                        <small> Gas Leak Control </small>
+                    {% endifequal %}
+                </a>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}
