@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
 from django.urls import reverse
 from django.core import serializers
+from .forms import CreateAccountForm
 import json
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -45,12 +46,17 @@ def input(request):
 
         return HttpResponseRedirect(reverse(home))
 
+@login_required
 def manage_dashboard(request):
     user = User.objects.all()
     return render(request, "CMSApp/manage_dashboard.html", {"user": user})
 
 def signup(request):
-    pass
+    if request.method=='POST':
+        pass
+    else:
+        form = CreateAccountForm()
+        return render(request, 'CMSApp/signup.html', {'form' : form})
 
 
 

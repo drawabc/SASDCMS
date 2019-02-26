@@ -3,16 +3,13 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <h2>Login</h2>
+            <h2>Create Account</h2>
         </div>
         <div class="row">
             <form method="post">
-                <div class="form-group row">
-                    <label for="username" class="col-sm-4 col-form-label">Name</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="username" placeholder="LightningSal337">
-                    </div>
-                </div>
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
+{% endblock %}
