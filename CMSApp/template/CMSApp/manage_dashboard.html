@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-lg-11">
+                <h1>Manage User Accounts</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10" align="right">
+                <a href="#" class="btn btn-primary">CREATE</a>
+            </div>
+        </div>
+        <div style="height:4px">&nbsp;</div>
+        <div class="row justify-center">
+            <div class="col-sm-2"></div>
+            <div class="col-lg-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Registered At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    {% for u in user %}
+                        {% if u.is_active %}
+                        <tr>
+                            <td>{{ u.username }}</td>
+                            <td>{{ u.date_joined }}</td>
+                            <td>
+                                <a href="#">BAN</a> <br>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if not u.is_active %}
+                        <tr style="background-color:red">
+                            <td>{{ u.username }}</td>
+                            <td>{{ u.date_joined }}</td>
+                            <td>
+                                <a href="#">UNBAN</a> <br>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+{% endblock %}

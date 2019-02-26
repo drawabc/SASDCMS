@@ -4,8 +4,10 @@ from CMSApp.models import Report
 from django.urls import reverse
 from django.core import serializers
 import json
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+
 def home(request):
     report_list = Report.objects.all().filter().order_by("time")
     try:
@@ -21,7 +23,6 @@ def home(request):
     for report in report_list:
         markers.append({"name" : report.name, "postal" : report.postal_code})
     markers = json.dumps(markers)
-    print(markers)
 
     return render(request,"CMSApp/home.html", {'report_list' : report_list, 'postal' : postal, 'markers' : markers})
 
@@ -44,9 +45,17 @@ def input(request):
 
         return HttpResponseRedirect(reverse(home))
 
+def manage_dashboard(request):
+    user = User.objects.all()
+    return render(request, "CMSApp/manage_dashboard.html", {"user": user})
+
+def signup(request):
+    pass
 
 
-#call center login done
+
+
+    #call center login done
 #input form done
 # TODO: admin create callcenter
 # TODO: home or user dashboard

@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^_admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls') ),
     url(r'^$', views.home, name='home'),
-    url(r'^input/$', views.input, name='input')
+    url(r'^input/$', views.input, name='input'),
+    url(r'^manage/$', views.manage_dashboard, name='manage_dashboard')
 ]

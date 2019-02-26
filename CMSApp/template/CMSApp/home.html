@@ -51,13 +51,18 @@
                             geocoder =  new google.maps.Geocoder();
                             for(mark in markers){
                                 console.log(mark);
-                                geocoder.geocode({'address': "Singapore" + markers[mark]["postal"]}, function(results, status) {
+                                geocoder.geocode({componentRestrictions: {
+                                    country: 'SG',
+                                    postalCode: markers[mark]["postal"]
+                                   }
+                                  }, function(results, status) {
                                     if (status === 'OK'){
                                         var marker = new google.maps.Marker({
                                             position: results[0].geometry.location,
                                             map: map,
                                             title: markers[mark]["name"]
                                         });
+                                        console.log(results);
                                     }
                                     else{
                                         console.log(status);
@@ -74,18 +79,20 @@
                             map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
                             //move center to selected report
-                            geocoder.geocode({'address': "Singapore" + address }, function(results, status) {
-                                    if (status === 'OK'){
-                                        map.setCenter(results[0].geometry.location);
-                                        map.setZoom(12);
-                                    }
-                                    else{
-                                        console.log(status);
-                                    }
-                            });
+                            if (address!=-1){
+                                geocoder.geocode({'address': "Singapore " + address }, function(results, status) {
+                                        if (status === 'OK'){
+                                            map.setCenter(results[0].geometry.location);
+                                            map.setZoom(12);
+                                        }
+                                        else{
+                                            console.log(status);
+                                        }
+                                });
+                            }
                         }
                     </script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap"></script>
+            <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap'></script>
         </div>
         <div class="col-sm">
             <ul class="list group">
