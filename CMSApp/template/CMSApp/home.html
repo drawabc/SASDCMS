@@ -7,9 +7,13 @@
             <script>
                         var map;
                         var markers = {{ markers|safe }};
-                        var address = {{ postal|safe }};
+                        var address = {{ center|safe }};
+                        if (address!=-1){
+                            address = { lat: parseFloat(address["lat"]), lng: parseFloat(address["lng"])};
+                        }
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
+                        var temp;
                         function initMap() {
                             var geocoder;
                             map = new google.maps.Map(document.getElementById('myMap'), {
@@ -48,27 +52,18 @@
                                 });
 
                              }
-                            geocoder =  new google.maps.Geocoder();
                             for(mark in markers){
                                 console.log(mark);
-                                geocoder.geocode({componentRestrictions: {
-                                    country: 'SG',
-                                    postalCode: markers[mark]["postal"]
-                                   }
-                                  }, function(results, status) {
-                                    if (status === 'OK'){
-                                        var marker = new google.maps.Marker({
-                                            position: results[0].geometry.location,
-                                            map: map,
-                                            title: markers[mark]["name"]
-                                        });
-                                        console.log(results);
-                                    }
-                                    else{
-                                        console.log(status);
-                                    }
+                                temp = markers[mark]["latlng"];
+                                console.log(temp);
+                                if (temp["lat"] == "NA") continue;
+                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
+                                console.log(temp);
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: markers[mark]["name"]
                                 });
-
                             }
 
                             //part of center map button
@@ -80,15 +75,8 @@
 
                             //move center to selected report
                             if (address!=-1){
-                                geocoder.geocode({'address': "Singapore " + address }, function(results, status) {
-                                        if (status === 'OK'){
-                                            map.setCenter(results[0].geometry.location);
-                                            map.setZoom(12);
-                                        }
-                                        else{
-                                            console.log(status);
-                                        }
-                                });
+                                map.setCenter(address);
+                                map.setZoom(12);
                             }
                         }
                     </script>

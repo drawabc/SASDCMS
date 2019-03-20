@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.core import serializers
 from .forms import CreateAccountForm
 import json
+from CMSApp.api.latitudelongitude import get_latlng
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -13,19 +14,18 @@ def home(request):
     report_list = Report.objects.all().filter().order_by("time")
     try:
         postal = request.GET["postal"]
+        center = get_latlng(postal)
     except:
-        if len(report_list)==0:
-            postal = request.GET["postal"]
-        else:
-            postal = -1
-    postal = json.dumps(postal)
+        center = -1
+
+    center = json.dumps(center)
     report_list = Report.objects.all()
-    markers = [];
+    markers = []
     for report in report_list:
-        markers.append({"name" : report.name, "postal" : report.postal_code})
+        markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
     markers = json.dumps(markers)
 
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'postal' : postal, 'markers' : markers})
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers})
 
 
 @login_required
@@ -50,13 +50,6 @@ def input(request):
 def manage_dashboard(request):
     user = User.objects.all()
     return render(request, "CMSApp/manage_dashboard.html", {"user": user})
-
-def signup(request):
-    if request.method=='POST':
-        pass
-    else:
-        form = CreateAccountForm()
-        return render(request, 'CMSApp/signup.html', {'form' : form})
 
 
 
