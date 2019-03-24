@@ -22,11 +22,11 @@ def get_latlng(postal_code):
 
         else:
             pass
-            
+
     else:
         pass
 
-    print(latitude_longitude, postal_code)
+    #print(latitude_longitude, postal_code)
     return latitude_longitude
 
 #test = get_latitude_longitude("636959")

@@ -51,15 +51,12 @@ def manage_dashboard(request):
     user = User.objects.all()
     return render(request, "CMSApp/manage_dashboard.html", {"user": user})
 
-
-
-
-    #call center login done
-#input form done
+# call center login done
+# input form done
 # TODO: admin create callcenter
 # TODO: home or user dashboard
 # TODO: admin dashboard
 # TODO: command and control
 
-#social media
-#sending email
+# social media
+# sending email

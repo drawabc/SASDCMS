@@ -28,9 +28,9 @@
                         <a class="navbar-brand" href="#">CMS</a>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav">
-                                <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-                                <a class="nav-item nav-link" href="{% url 'input' %}">Input</a>
-                                <a class="nav-item nav-link" href="{% url 'manage_dashboard' %}">Manage</a>
+                                <a class="nav-item nav-link" href="{% url 'CMSApp:home' %}">Home</a>
+                                <a class="nav-item nav-link" href="{% url 'CMSApp:input' %}">Input</a>
+                                <a class="nav-item nav-link" href="{% url 'CMSApp:manage_dashboard' %}">Manage</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}

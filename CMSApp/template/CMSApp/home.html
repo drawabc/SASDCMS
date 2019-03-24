@@ -85,7 +85,7 @@
         <div class="col-sm">
             <ul class="list group">
                 {% for report in report_list %}
-                <a href="{% url 'home' %}?postal={{ report.postal_code }}" class="list-group-item list-group-item-action" style="width: 60%;">
+                <a href="{% url 'CMSApp:home' %}?postal={{ report.postal_code }}" class="list-group-item list-group-item-action" style="width: 60%;">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ report.name }}</h5>
                         <small>{{ report.time.date }}</small>
