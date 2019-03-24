@@ -8,6 +8,8 @@ from CMSApp.api.latitudelongitude import get_latlng
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from authentication import urls
+from django.core.mail import EmailMessage
+
 # Create your views here.
 
 def home(request):
@@ -51,9 +53,12 @@ def detail(request, report_pk):
     return render(request, "CMSApp/detail.html", {"report":report})
 # call center login done
 # input form done
+
 # TODO: home or user dashboard
-# TODO: admin dashboard
 # TODO: command and control
 
+def email(request):
+    email = EmailMessage('title', 'body', to=['edwardchristopherl@gmail.com'])
+    email.send()
 # social media
 # sending email
