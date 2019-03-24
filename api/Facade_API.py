@@ -1,8 +1,8 @@
-from Haze import Haze
-from Email import email
-from Dengue import dengue_api
-from SMS import SMS
-from Twitter import twitter
+from api.Haze import Haze
+from api.Email import email
+from api.Dengue import dengue_api
+from api.SMS import SMS
+from api.Twitter import twitter
 
 class FacadeAPI(object):
     def __init__(self):
