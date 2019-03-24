@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-lg">
+            <div class="container bg-light" style="height:60%;saxborder:1px solid #cecece;" align="center">
+                <h1> Report Summary </h1>
+                <h4>{{ report.time }}</h4>
+                <h5>Location: {{ report.location }}</h5>
+                Name: {{ report.name }} <br>
+                Mobile: {{ report.mobile }} <br>
+                Location: {{ report.location }}, Singapore {{ report.postal_code }} <br>
+                Type:
+                {% ifequal report.type "FF" %}
+                    Fire-fighting
+                {% endifequal %}
+                {% ifequal report.type "EA" %}
+                    Emergency Ambulance
+                {% endifequal %}
+                {% ifequal report.type "RE" %}
+                    Rescue & Evacuation
+                {% endifequal %}
+                {% ifequal report.type "GL" %}
+                    Gas Leak Control
+                {% endifequal %}
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock %}

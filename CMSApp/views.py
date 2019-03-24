@@ -1,13 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
 from django.urls import reverse
 from django.core import serializers
-from .forms import CreateAccountForm
 import json
 from CMSApp.api.latitudelongitude import get_latlng
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from authentication import urls
 # Create your views here.
 
 def home(request):
@@ -46,14 +46,11 @@ def input(request):
 
         return HttpResponseRedirect(reverse(home))
 
-@login_required
-def manage_dashboard(request):
-    user = User.objects.all()
-    return render(request, "CMSApp/manage_dashboard.html", {"user": user})
-
+def detail(request, report_pk):
+    report = get_object_or_404(Report, pk=report_pk)
+    return render(request, "CMSApp/detail.html", {"report":report})
 # call center login done
 # input form done
-# TODO: admin create callcenter
 # TODO: home or user dashboard
 # TODO: admin dashboard
 # TODO: command and control

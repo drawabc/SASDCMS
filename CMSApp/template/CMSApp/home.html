@@ -90,7 +90,7 @@
                         <h5 class="mb-1">{{ report.name }}</h5>
                         <small>{{ report.time.date }}</small>
                     </div>
-                    <p class="mb-1">{{ report.mobile }} @ {{ report.postal_code }}</p>
+                    <p class="mb-1">{{ report.mobile }} @ {{ report.postal_code }} </p>
                     {% ifequal report.type "FF" %}
                         <small> Fire-fighting </small>
                     {% endifequal %}
@@ -104,6 +104,10 @@
                         <small> Gas Leak Control </small>
                     {% endifequal %}
                 </a>
+                <a href="{% url 'CMSApp:detail'  report.pk %}" class="list-group-item" style="width: 60%;">
+                    <div style="font-size:14;">Details</div>
+                </a>
+                <div style="height:5px;">&nbsp;</div>
                 {% endfor %}
             </ul>
         </div>
