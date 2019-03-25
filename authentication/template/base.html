@@ -34,17 +34,17 @@
                             </div>
                         </div>
                         {% if user.is_authenticated %}
-                        Hi {{ user.username }}!&nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">
-                            Logout
-                        </button>
+                            Hi {{ user.username }}!&nbsp;
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">
+                                Logout
+                            </button>s
                         {% else %}
-                        You are not logged in
-                        <br>
-                        <button onclick="window.location.href='{% url 'authentication:login' %}'" class="btn btn-secondary bg-success text-light">
-                            Login
-                        </button>
-                    {% endif %}
+                            You are not logged in
+                            <br>
+                            <button onclick="window.location.href='{% url 'authentication:login' %}'" class="btn btn-secondary bg-success text-light">
+                                Login
+                              </button>
+                        {% endif %}
                     </nav>
                 </div>
             </div>

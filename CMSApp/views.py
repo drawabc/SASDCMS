@@ -42,7 +42,9 @@ def input(request):
             location = request.POST["location"]
             type = request.POST["type"]
             postal = request.POST["postal"]
-            new_report = Report(name=name, mobile=mobile, location=location, type=type, postal_code=postal)
+            desc = request.POST["description"]
+            unit = request.POST["unit"]
+            new_report = Report(name=name, mobile=mobile, location=location, type=type, postal_code=postal, description=desc, unit_number=unit)
             new_report.save()
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
@@ -68,8 +70,6 @@ def get_data():
     for key, value in haze["pm25"].items():
         haze_template[key]["pm25"] = value
     return haze_template
-
-
 
 # social media
 # sending email

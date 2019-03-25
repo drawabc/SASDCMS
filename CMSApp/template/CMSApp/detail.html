@@ -10,7 +10,7 @@
                 <h5>Location: {{ report.location }}</h5>
                 Name: {{ report.name }} <br>
                 Mobile: {{ report.mobile }} <br>
-                Location: {{ report.location }}, Singapore {{ report.postal_code }} <br>
+                Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }} <br>
                 Type:
                 {% ifequal report.type "FF" %}
                     Fire-fighting
@@ -24,6 +24,9 @@
                 {% ifequal report.type "GL" %}
                     Gas Leak Control
                 {% endifequal %}
+                <br>
+                Description: <br>
+                {{ report.description }}
             </div>
         </div>
         <div class="col-2"></div>
