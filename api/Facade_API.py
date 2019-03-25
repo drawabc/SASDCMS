@@ -10,9 +10,9 @@ class FacadeAPI(object):
         self.dengue = dengue_api.Dengue()
         self.SMS = SMS.SMSAPI()
         self.twitter = twitter.TwitterAPI()
-        #self.email = email.EmailSend()
-        #self.server = email.EmailSend.startServer()
-        
+        self.email = email.EmailSend()
+        self.server = email.EmailSend.startServer()
+
     def getHaze(self):
         return self.haze.getJSON()
     
@@ -33,7 +33,8 @@ class FacadeAPI(object):
     def sendEmail(self, recipient, msg, subject):
         return self.email.send_email(self.server,recipient,msg,subject)
 if __name__ == "__main__":
-    API = FacadeAPI()
+    pass
+    #API = FacadeAPI()
 
     #Get the JSON for haze
     #print(API.getHaze())
@@ -51,4 +52,4 @@ if __name__ == "__main__":
     #print(API.sendTwitter("This is a test Message"))
 
     #Sending Email
-    #print(API.sendEmail('rainscindo@gmail.com', "Greetings","Subject Title"))
+    #print(API.sendEmail(['rainscindo@gmail.com', "Greetings","Subject Title"))

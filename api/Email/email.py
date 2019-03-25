@@ -17,13 +17,13 @@ class EmailSend:
             traceback.print_exc()
             return "Email failed to send"
 
-    def startServer(self):
+    def startServer():
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.ehlo()
         server.starttls()
         return server
 
-    def quitServer(self, server):
+    def quitServer(server):
         server.quit()
 
 
