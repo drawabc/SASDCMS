@@ -22,12 +22,13 @@ def home(request):
         center = -1
     center = json.dumps(center)
     report_list = Report.objects.all()
+    haze = get_data()
     markers = []
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
     markers = json.dumps(markers)
 
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers})
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze})
 
 
 @login_required
@@ -52,7 +53,22 @@ def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
     return render(request, "CMSApp/detail.html", {"report":report})
 
-from api.Email.email import EmailSend
+from api.Facade_API import FacadeAPI
+
+def get_data():
+    f = FacadeAPI()
+    haze = f.getHaze()
+    #dengue = f.getDengue()
+    haze_template = {}
+    for key, value in haze["location"].items():
+        haze_template[key] = {}
+        haze_template[key]["location"] = value
+    for key, value in haze["psi"].items():
+        haze_template[key]["psi"] = value
+    for key, value in haze["pm25"].items():
+        haze_template[key]["pm25"] = value
+    return haze_template
+
 
 
 # social media

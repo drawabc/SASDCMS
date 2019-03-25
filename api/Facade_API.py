@@ -10,8 +10,8 @@ class FacadeAPI(object):
         self.dengue = dengue_api.Dengue()
         self.SMS = SMS.SMSAPI()
         self.twitter = twitter.TwitterAPI()
-        self.email = email.EmailSend()
-        self.server = email.EmailSend.startServer()
+        #self.email = email.EmailSend()
+        #self.server = email.EmailSend.startServer()
         
     def getHaze(self):
         return self.haze.getJSON()

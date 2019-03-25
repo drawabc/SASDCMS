@@ -11,6 +11,7 @@
                         if (address!=-1){
                             address = { lat: parseFloat(address["lat"]), lng: parseFloat(address["lng"])};
                         }
+                        var haze = {{ haze|safe }};
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
                         var temp;
@@ -53,18 +54,38 @@
 
                              }
                             for(mark in markers){
-                                console.log(mark);
                                 temp = markers[mark]["latlng"];
-                                console.log(temp);
                                 if (temp["lat"] == "NA") continue;
                                 temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
-                                console.log(temp);
                                 var marker = new google.maps.Marker({
                                     position: temp,
                                     map: map,
                                     title: markers[mark]["name"]
                                 });
                             }
+                            for (haz in haze){
+                                temp = haze[haz]["location"];
+                                temp = { lat: parseFloat(temp["latitude"]), lng: parseFloat(temp["longitude"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: haz
+                                });
+
+                                var infowindow = new google.maps.InfoWindow();
+                                var content = '<div><strong>' + haz + '</strong><br>' +
+                                        'PSI: ' + haze[haz]["psi"] + '<br>' +
+                                        'PM25: '+ haze[haz]["pm25"] + '</div>'
+
+
+                               google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                                    return function() {
+                                        infowindow.setContent(content);
+                                        infowindow.open(map, this);
+                                    };
+                               })(marker,content,infowindow));
+                            }
+
 
                             //part of center map button
                             var centerControlDiv = document.createElement('div');
