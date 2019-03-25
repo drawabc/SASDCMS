@@ -32,7 +32,7 @@
                             <td>{{ u.date_joined }}</td>
                             <td align="left">
                                 <a class="btn btn-default text-primary ml-0 pl-0"href="#">Change Password</a> <br>
-                                <a class="btn btn-default text-primary ml-0 pl-0" href="#">Delete</a>
+                                <a class="btn btn-default text-primary ml-0 pl-0" href="{% url 'authentication:delete' u.pk %}">Delete</a>
                             </td>
                         </tr>
                         {% endif %}

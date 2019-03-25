@@ -46,7 +46,7 @@ def input(request):
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
 
-        return HttpResponseRedirect(reverse(home))
+        return HttpResponseRedirect(reverse('CMSApp:home'))
 
 def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
@@ -54,11 +54,6 @@ def detail(request, report_pk):
 
 from api.Email.email import EmailSend
 
-def email():
-    e = EmailSend()
-    server = e.startServer()
-    print(e.send_email(server, ['echristo001@e.ntu.edu.sg'], 'GG MATE', 'CMS APP'))
-    e.quitServer(server)
 
 # social media
 # sending email

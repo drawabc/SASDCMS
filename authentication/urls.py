@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'},name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^manage/$', views.manage_dashboard, name='manage_dashboard'),
-    url(r'^signup/$', views.signup, name='signup')
+    url(r'^signup/$', views.signup, name='signup'),
+    url(r'^delete/(?P<user_pk>\w+)/$', views.delete_account, name='delete')
 ]

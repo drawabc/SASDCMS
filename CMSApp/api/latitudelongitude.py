@@ -21,8 +21,9 @@ def get_latlng(postal_code):
     # if onemap fails, try google geocode
     if latitude_longitude["lat"] == "NA":
         geocode_result = get_latlng_geocode(postal_code)
-        latitude_longitude["lat"] = str(geocode_result["lat"])
-        latitude_longitude["lng"] = str(geocode_result["lng"])
+        if geocode_result != None:
+            latitude_longitude["lat"] = str(geocode_result["lat"])
+            latitude_longitude["lng"] = str(geocode_result["lng"])
 
     # if google geocode fails, I don't know what to do anymore
 
@@ -54,9 +55,10 @@ def get_latlng_geocode(postal_code):
     gmaps = googlemaps.Client(key="AIzaSyCyOZQvPbapvjmUYcqUawu00vM8Ob1R5xE")
 
     geocode_result = gmaps.geocode(components={"country": "SG", "postal_code": postal_code})
-
-    return geocode_result[0]["geometry"]["location"]
-
+    try:
+        return geocode_result[0]["geometry"]["location"]
+    except:
+        return None
 # test = get_latlng("636959")
 
 # for element in test:

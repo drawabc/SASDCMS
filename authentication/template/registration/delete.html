@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <div class="row" style="height:25%"></div>
+        <form action="" method="post" align="center">{% csrf_token %}
+            <p>Are you sure you want to delete "{{ user.username }}"?</p>
+            <button type="submit" class="btn btn-danger">Confirm</button>
+            <a href="{% url 'authentication:manage_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+{% endblock %}

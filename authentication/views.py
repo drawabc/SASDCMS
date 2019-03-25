@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -21,7 +21,17 @@ def signup(request):
             #raw_password = form.cleaned_data.get('password1')
             #user = authenticate(username=username, password=raw_password)
             #login(request, user)
-            return HttpResponseRedirect(reverse('manage_dashboard'))
+            return HttpResponseRedirect(reverse('authentication:manage_dashboard'))
     else:
         form = CreateAccountForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+def delete_account(request, user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    if request.method == 'POST':
+        user.delete()
+        return HttpResponseRedirect(reverse('authentication:manage_dashboard'))
+    else:
+        user = get_object_or_404(User, pk=user_pk)
+        return render(request, 'registration/delete.html', {'user' : user})
+    
