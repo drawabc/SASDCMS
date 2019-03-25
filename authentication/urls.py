@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^manage/$', views.manage_dashboard, name='manage_dashboard'),
     url(r'^signup/$', views.signup, name='signup'),
-    url(r'^delete/(?P<user_pk>\w+)/$', views.delete_account, name='delete')
+    url(r'^delete/(?P<user_pk>\w+)/$', views.delete_account, name='delete'),
+    url(r'^change_pwd/(?P<user_pk>\w+)/$', views.change_password, name='change_pwd')
 ]

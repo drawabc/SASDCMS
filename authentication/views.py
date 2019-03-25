@@ -34,4 +34,13 @@ def delete_account(request, user_pk):
     else:
         user = get_object_or_404(User, pk=user_pk)
         return render(request, 'registration/delete.html', {'user' : user})
-    
+
+def change_password(request, user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    if request.method == 'POST':
+        new_pwd = request.POST["pwd"]
+        user.set_password(new_pwd)
+        return HttpResponseRedirect(reverse('authentication:manage_dashboard'))
+    else:
+        user = get_object_or_404(User, pk=user_pk)
+        return render(request, 'registration/changepwd.html', {'user': user})
