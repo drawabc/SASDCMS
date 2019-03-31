@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
+from CMSApp.api.Facade_API import FacadeAPI
 from django.urls import reverse
 from django.core import serializers
 import json
@@ -55,7 +56,6 @@ def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
     return render(request, "CMSApp/detail.html", {"report":report})
 
-from api.Facade_API import FacadeAPI
 
 def get_data():
     f = FacadeAPI()

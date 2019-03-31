@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <!-- Bootstrap CSS -->
+        <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -14,10 +15,20 @@
             CMS App
         </title>
         <style>
+            .anyClass {
+                height:600px;
+                overflow-y: scroll;
+            }
           #myMap {
             height: 600px;
             width: 100%;
           }
+          #test{
+      max-height: 300px;
+      margin-bottom: 10px;
+      overflow:scroll;
+      -webkit-overflow-scrolling: touch;
+  }
         </style>
     </head>
     <body>
@@ -27,10 +38,10 @@
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <a class="navbar-brand" href="#">CMS</a>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
-                                <a class="nav-item nav-link" href="{% url 'CMSApp:home' %}">Home</a>
-                                <a class="nav-item nav-link" href="{% url 'CMSApp:input' %}">Input</a>
-                                <a class="nav-item nav-link" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
+                            <div class="nav nav-tabs">
+                                <a id = "home" class="nav-item nav-link" href="{% url 'CMSApp:home' %}">Home</a>
+                                <a id = "input" class="nav-item nav-link" href="{% url 'CMSApp:input' %}">Input</a>
+                                <a id = "dashboard" class="nav-item nav-link" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}

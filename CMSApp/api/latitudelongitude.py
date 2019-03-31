@@ -68,5 +68,3 @@ def get_latlng_geocode(postal_code):
 
 # pp = pprint.PrettyPrinter()
 # pp.pprint(test)
-
-

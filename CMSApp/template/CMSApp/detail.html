@@ -4,29 +4,39 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col-lg">
-            <div class="container bg-light" style="height:60%;saxborder:1px solid #cecece;" align="center">
-                <h1> Report Summary </h1>
-                <h4>{{ report.time }}</h4>
-                <h5>Location: {{ report.location }}</h5>
-                Name: {{ report.name }} <br>
-                Mobile: {{ report.mobile }} <br>
-                Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }} <br>
-                Type:
-                {% ifequal report.type "FF" %}
-                    Fire-fighting
-                {% endifequal %}
-                {% ifequal report.type "EA" %}
-                    Emergency Ambulance
-                {% endifequal %}
-                {% ifequal report.type "RE" %}
-                    Rescue & Evacuation
-                {% endifequal %}
-                {% ifequal report.type "GL" %}
-                    Gas Leak Control
-                {% endifequal %}
-                <br>
-                Description: <br>
-                {{ report.description }}
+            <div class="d-flex flex-column"  align="center">
+                <div class="p-2 bg-dark text-white border border-secondary"><h1><b>Report Summary</b></h1></div>
+                <div class="p-2 bg-dark text-white"><h3>{{ report.time }}</h3></div>
+                <div class="p-2 bg-dark text-white "><h5>{{ report.location }}</h5></div>
+                <div class="p-2 bg-dark text-white">Name: {{ report.name }}</div>
+                <div class="p-2 bg-dark text-white">Mobile: {{ report.mobile }</div>
+                <div class="p-2 bg-dark text-white">Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }}</div>
+                <div class="p-2 bg-dark text-white">
+                  Type:
+                  {% ifequal report.type "FF" %}
+                      Fire-fighting
+                  {% endifequal %}
+                  {% ifequal report.type "EA" %}
+                      Emergency Ambulance
+                  {% endifequal %}
+                  {% ifequal report.type "RE" %}
+                      Rescue & Evacuation
+                  {% endifequal %}
+                  {% ifequal report.type "GL" %}
+                      Gas Leak Control
+                  {% endifequal %}
+                </div>
+                <div class="p-2 bg-dark text-white"><p>
+                    <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Description:
+                    </button>
+                  </p>
+                  <div class="collapse" id="collapseExample" style="">
+                    <div class="card card-body bg-dark text-white">
+                        {{ report.description }}
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
         <div class="col-2"></div>
