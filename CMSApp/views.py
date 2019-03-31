@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
-from CMSApp.api.Facade_API import FacadeAPI
+from api.latitudelongitude import get_latlng
 from django.urls import reverse
 from django.core import serializers
 import json
-from CMSApp.api.latitudelongitude import get_latlng
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from authentication import urls
@@ -57,6 +56,7 @@ def detail(request, report_pk):
     return render(request, "CMSApp/detail.html", {"report":report})
 
 
+from api.Facade_API import FacadeAPI
 def get_data():
     f = FacadeAPI()
     haze = f.getHaze()
