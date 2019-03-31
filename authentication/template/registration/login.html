@@ -1,10 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 align="center">Login</h2>
+
+<br>
+<br>
+<br>
+<br>
+<div class="card mx-auto" style="width: 18rem;" >
+    <div class="card-header bg-secondary text-light">  
+        <h2 align="center"> Login</h2>
+    </div>
+
+    <div class="card-body bg-dark text-light">
 <form method="post" align="center">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-default bg-success text-light">Login</button>
+  <div align="center">
+      {{ form.as_p }}
+  
+  <button type="submit" class="btn btn-default bg-success text-light">
+    Login
+  </button>
+  </div>
 </form>
+</div>
+</div>
 {% endblock %}

@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark text-white">
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-lg-11">
-                <h1>Manage User Accounts</h1>
+                <h1><b>Manage User Accounts</b></h1>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-10" align="right">
-                <a href="{% url 'authentication:signup' %}" class="btn btn-primary">CREATE</a>
+                <a href="{% url 'authentication:signup' %}" class="btn btn-success">CREATE</a>
             </div>
         </div>
         <div style="height:4px">&nbsp;</div>
         <div class="row justify-center">
             <div class="col-sm-2"></div>
             <div class="col-lg-8">
-                <table class="table">
+                <table class="table text-white">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -31,8 +31,8 @@
                             <td>{{ u.username }}</td>
                             <td>{{ u.date_joined }}</td>
                             <td align="left">
-                                <a class="btn btn-default text-primary ml-0 pl-0"href="{% url 'authentication:change_pwd' u.pk %}">Change Password</a> <br>
-                                <a class="btn btn-default text-primary ml-0 pl-0" href="{% url 'authentication:delete' u.pk %}">Delete</a>
+                                <a class="btn btn-default text-info ml-0 pl-0"href="{% url 'authentication:change_pwd' u.pk %}">Change Password</a> <br>
+                                <a class="btn btn-default text-info ml-0 pl-0" href="{% url 'authentication:delete' u.pk %}">Delete</a>
                             </td>
                         </tr>
                         {% endif %}
