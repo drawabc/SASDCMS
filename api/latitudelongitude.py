@@ -16,6 +16,7 @@ def get_latlng(postal_code):
     latitude_longitude = get_latlng_onemap(postal_code)
 
     # if onemap fails, try google geocode        
+    """
     if latitude_longitude["lat"] == "NA":
         geocode_result = get_latlng_geocode(postal_code)
         if geocode_result is None:
@@ -24,7 +25,7 @@ def get_latlng(postal_code):
             latitude_longitude["lat"] = str(geocode_result["lat"])
             latitude_longitude["lng"] = str(geocode_result["lng"])
     # if google geocode fails, I don't know what to do anymore
-
+    """
     print(latitude_longitude, postal_code) # helpful for tracing
     return latitude_longitude
 
@@ -58,7 +59,7 @@ def get_latlng_geocode(postal_code):
     try:
         return geocode_result[0]["geometry"]["location"]
     except:
-        return None
+        return {"lat" : "NA", "lng" : "NA"}
 
     
 #test = get_latlng("636959")
