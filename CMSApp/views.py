@@ -14,15 +14,17 @@ from django.conf import settings
 # Create your views here.
 
 def home(request):
-    report_list = Report.objects.all().filter().order_by("time")[:5]
+    report_list = Report.objects.all().filter().order_by("time")
     try:
         postal = request.GET["postal"]
+        #postal = int(postal)
         center = get_latlng(postal)
     except:
         center = -1
     center = json.dumps(center)
     haze = get_haze_data()
     markers = []
+
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
     markers = json.dumps(markers)
@@ -56,6 +58,7 @@ def detail(request, report_pk):
 
 from api.Facade_API import FacadeAPI
 f = FacadeAPI()
+
 def get_haze_data():
     haze = f.getHaze()
     #dengue = f.getDengue()
