@@ -46,7 +46,7 @@
                         </div>
                         {% if user.is_authenticated %}
                         Hi {{ user.username }}!&nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' user.pk %}'" class="ui primary button">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' %}'" class="ui primary button">
                             Profile
                         </button>&nbsp;
                         <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">
