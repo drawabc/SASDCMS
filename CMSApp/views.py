@@ -26,6 +26,7 @@ def home(request):
     markers = []
     dengue = get_dengue_data()
     dengue = dengue['data']
+    print(len(dengue))
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
     markers = json.dumps(markers)
@@ -60,12 +61,16 @@ def detail(request, report_pk):
 from api.Facade_API import FacadeAPI
 f = FacadeAPI()
 
+@login_required
+def archive(request):
+    all_reports = Report.objects.all()
+    return render(request, "CMSApp/archive.html", {'all_reports': all_reports})
+
 def somethingnew(request):
     return JsonResponse({'foo': 'bar'})
 
 def get_haze_data():
     haze = f.getHaze()
-    #dengue = f.getDengue()
     haze_template = {}
     for key, value in haze["location"].items():
         haze_template[key] = {}
