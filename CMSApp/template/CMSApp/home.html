@@ -13,6 +13,7 @@
                         if (address!=-1){
                             address = { lat: parseFloat(address["lat"]), lng: parseFloat(address["lng"])};
                         }
+                        var dengue = {{ dengue|safe }};
                         var haze = {{ haze|safe }};
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
@@ -23,6 +24,7 @@
                                 center: {lat: 1.3521 , lng:  103.8198},
                                 zoom: 11
                             });
+
                             var infowindow = new google.maps.InfoWindow();
                             function CenterControl(controlDiv, map) {
                                 // Set CSS for the control border.
@@ -55,6 +57,16 @@
                                 });
 
                              }
+                            for(d in dengue){
+                                outer = dengue[d];
+                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            }
+                            map.data.setStyle({
+                                    fillColor: 'red',
+                                    strokeWeight: 10,
+                                    strokeColor: 'red'
+                            });
+
                             for(mark in markers){
                                 temp = markers[mark]["latlng"];
                                 if (temp["lat"] == "NA") continue;
@@ -88,7 +100,6 @@
                                     };
                                })(marker,content,infowindow));
                             }
-
 
                             //part of center map button
                             var centerControlDiv = document.createElement('div');

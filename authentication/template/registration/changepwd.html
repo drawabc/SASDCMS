@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <div class="row" style="height:25%"></div>
+        <div class="row" style="height:15%"></div>
         <form action="" method="post" align="center">{% csrf_token %}
-            <p>Please enter new password for "{{ user.username }}"?</p>
-            <input type="password" name="pwd" minlength="8">
-            <div style="height:10px">&nbsp;</div>
+            {{ form.as_p }}
+            <div style="height:4px"></div>
             <button type="submit" class="btn btn-success">Confirm</button>
             <a href="{% url 'authentication:manage_dashboard' %}" class="btn btn-danger">Cancel</a>
         </form>

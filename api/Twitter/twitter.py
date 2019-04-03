@@ -23,4 +23,4 @@ class TwitterAPI:
             return "Tweet failed to send"
         
 if __name__ == '__main__':
-    print(TwitterAPI().sendTweet("This is a test Message"))
+    print(TwitterAPI().sendTweet("This is a test Message 999999"))

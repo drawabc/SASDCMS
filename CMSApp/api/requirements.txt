@@ -1,8 +1,0 @@
-apscheduler
-bs4
-twilio
-telepot
-tweepy
-googlemaps
-requests
-

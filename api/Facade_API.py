@@ -1,8 +1,10 @@
 from api.Haze import Haze
 from api.Email import email
 from api.Dengue import dengue_api
-from api.SMS import SMS
+from api.sms import SMS
 from api.Twitter import twitter
+from api.Telegram import telegram_api
+#import random
 
 class FacadeAPI(object):
     def __init__(self):
@@ -12,7 +14,8 @@ class FacadeAPI(object):
         self.twitter = twitter.TwitterAPI()
         self.email = email.EmailSend()
         self.server = email.EmailSend.startServer()
-
+        self.telegram_api = telegram_api.TelegramAPI()
+        
     def getHaze(self):
         return self.haze.getJSON()
     
@@ -32,9 +35,10 @@ class FacadeAPI(object):
     
     def sendEmail(self, recipient, msg, subject):
         return self.email.send_email(self.server,recipient,msg,subject)
+    def sendTelegram(self,message):
+        return self.telegram_api.sendTelegramMessage(message)
 if __name__ == "__main__":
-    pass
-    #API = FacadeAPI()
+    API = FacadeAPI()
 
     #Get the JSON for haze
     #print(API.getHaze())
@@ -43,13 +47,16 @@ if __name__ == "__main__":
     #print(API.getDengue())
 
     #Save the JSON file for dengue
-    #print(API.saveDengue('dengue_location.json'))
+    # print(API.saveDengue('dengue_location.json'))
 
     #Sending SMS
-    #print(API.sendSMS("this is a test message",'+12565769037','+6583676240'))
+    print(API.sendSMS("this is a test message",'+12565769037','+65 9657 9895'))
 
     #Sending Tweet
     #print(API.sendTwitter("This is a test Message"))
 
     #Sending Email
-    #print(API.sendEmail(['rainscindo@gmail.com', "Greetings","Subject Title"))
+#print(API.sendEmail(['rainscindo@gmail.com'], "Greetings","Subject Title"))
+
+    #Sending message on telegram
+    print(API.sendTelegram('This is a test message'))

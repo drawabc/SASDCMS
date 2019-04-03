@@ -34,10 +34,13 @@
                             </div>
                         </div>
                         {% if user.is_authenticated %}
-                            Hi {{ user.username }}!&nbsp;
+                            Hi {{ user.username }}!
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' user.pk %}'" class="ui primary button">
+                                Profile
+                            </button>&nbsp;
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">
                                 Logout
-                            </button>s
+                            </button>
                         {% else %}
                             You are not logged in
                             <br>
@@ -53,4 +56,4 @@
             {% endblock content %}
         </div>
     </body>
-</html>
+</html>s

@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from CMSApp.models import Report
-from CMSApp.api.Facade_API import FacadeAPI
+from api.latitudelongitude import get_latlng
 from django.urls import reverse
 from django.core import serializers
 import json
-from CMSApp.api.latitudelongitude import get_latlng
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from authentication import urls
@@ -18,18 +17,20 @@ def home(request):
     report_list = Report.objects.all().filter().order_by("time")
     try:
         postal = request.GET["postal"]
+        #postal = int(postal)
         center = get_latlng(postal)
     except:
         center = -1
     center = json.dumps(center)
-    report_list = Report.objects.all()
-    haze = get_data()
+    haze = get_haze_data()
     markers = []
+    dengue = get_dengue_data()
+    dengue = dengue['data']
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
     markers = json.dumps(markers)
 
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze})
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue})
 
 
 @login_required
@@ -56,9 +57,10 @@ def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
     return render(request, "CMSApp/detail.html", {"report":report})
 
+from api.Facade_API import FacadeAPI
+f = FacadeAPI()
 
-def get_data():
-    f = FacadeAPI()
+def get_haze_data():
     haze = f.getHaze()
     #dengue = f.getDengue()
     haze_template = {}
@@ -71,5 +73,14 @@ def get_data():
         haze_template[key]["pm25"] = value
     return haze_template
 
+import urllib.request as ur
+import json
+import pprint
+def get_dengue_data():
+    url = 'https://api-scheduler.herokuapp.com/'
+    url_parser = ur.urlopen(ur.Request(url))
+    info = url_parser.read()
+    json_dict = json.loads(info.decode('utf-8'))
+    return json_dict
 # social media
 # sending email
