@@ -14,7 +14,6 @@ from django.conf import settings
 # Create your views here.
 
 def home(request):
-    # TODO: add filter
     report_list = Report.objects.all().filter().order_by("time")
     try:
         postal = request.GET["postal"]

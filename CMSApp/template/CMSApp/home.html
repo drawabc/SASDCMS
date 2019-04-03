@@ -61,6 +61,12 @@
                                 outer = dengue[d];
                                 map.data.add({geometry: new google.maps.Data.Polygon([outer])})
                             }
+                            map.data.setStyle({
+                                    fillColor: 'red',
+                                    strokeWeight: 10,
+                                    strokeColor: 'red'
+                            });
+
                             for(mark in markers){
                                 temp = markers[mark]["latlng"];
                                 if (temp["lat"] == "NA") continue;
