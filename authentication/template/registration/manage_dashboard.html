@@ -25,13 +25,13 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {% for u in user %}
+                    {% for u in users %}
                         {% if u.is_active %}
                         <tr>
                             <td>{{ u.username }}</td>
                             <td>{{ u.date_joined }}</td>
                             <td align="left">
-                                <a class="btn btn-default text-info ml-0 pl-0"href="{% url 'authentication:change_pwd' u.pk %}">Change Password</a> <br>
+                                <a class="btn btn-default text-info ml-0 pl-0"href="{% url 'authentication:reset_pwd' u.pk %}">Reset Password</a> <br>
                                 <a class="btn btn-default text-info ml-0 pl-0" href="{% url 'authentication:delete' u.pk %}">Delete</a>
                             </td>
                         </tr>

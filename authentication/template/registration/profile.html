@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid bg-dark text-white">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-lg-11">
+                <h1><b>{{ user.username }}'s Profile</b></h1>
+            </div>
+        </div>
+        <div class="row" style="height:10%;"></div>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4" align="center">
+                <a href="{% url 'authentication:change_pwd' user.pk %}"> Change Password</a>
+                <div style="height:3px">&nbsp;</div>
+                <a href="{% url 'authentication:logout' %}"> Logout</a>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+{% endblock %}
