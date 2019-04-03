@@ -5,6 +5,7 @@
     <div class="row">  
         <div class="col-md">
             <div id="myMap"></div>
+            <button onclick="changex()">Dengue Toggle</button>
             <script>
                         var map;
                         var markers = {{ markers|safe }};
@@ -17,6 +18,24 @@
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
                         var temp;
+                        var x = 1;
+                        function changex(){
+                            x = x+1;
+                            x = x%2;
+                            initMap();
+                        }
+                        function denguex(map) {
+                            for(d in dengue){
+                                outer = dengue[d];
+                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            }
+                            map.data.setStyle({
+                                    fillColor: 'red',
+                                    strokeWeight: 10,
+                                    strokeColor: 'red'
+                            });
+                        }
+
                         function initMap() {
                             var geocoder;
                             map = new google.maps.Map(document.getElementById('myMap'), {
@@ -56,16 +75,9 @@
                                 });
 
                              }
-                            for(d in dengue){
-                                outer = dengue[d];
-                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            if(x==1){
+                                denguex(map);
                             }
-                            map.data.setStyle({
-                                    fillColor: 'red',
-                                    strokeWeight: 10,
-                                    strokeColor: 'red'
-                            });
-
                             for(mark in markers){
                                 temp = markers[mark]["latlng"];
                                 if (temp["lat"] == "NA") continue;
@@ -77,7 +89,7 @@
                                 });
                             }
                             var image = {
-                                url: 'https://cdn2.iconfinder.com/data/icons/weather-solid-4/96/Weather-cloud-rain-bright-sun-lighting-humidity-rain-42-512.png',
+                                url: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/699966-icon-1-cloud-512.png',
                                  scaledSize: new google.maps.Size(50, 50), // scaled size
                                 // The origin for this image is (0, 0).
                                 origin: new google.maps.Point(0, 0),
