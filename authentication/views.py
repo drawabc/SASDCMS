@@ -45,7 +45,9 @@ def reset_password(request, user_pk):
     user = get_object_or_404(User, pk=user_pk)
     if request.method == 'POST':
         new_pwd = request.POST["pwd"]
+        print(new_pwd)
         user.set_password(new_pwd)
+        user.save()
         return HttpResponseRedirect(reverse('authentication:manage_dashboard'))
     else:
         user = get_object_or_404(User, pk=user_pk)
