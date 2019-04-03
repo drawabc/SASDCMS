@@ -53,18 +53,19 @@ def reset_password(request, user_pk):
         user = get_object_or_404(User, pk=user_pk)
         return render(request, 'registration/resetpwd.html', {'user': user})
 
-def profile(request, user_pk):
-    user = get_object_or_404(User, pk=user_pk)
+@login_required
+def profile(request):
+    user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'registration/profile.html')
 
-def change_password(request, user_pk):
+def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
-            return HttpResponseRedirect(reverse('authentication:profile', args={user.pk}))
+            return HttpResponseRedirect(reverse('authentication:profile'))
         else:
             messages.error(request, 'Please correct the error below.')
     else:

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from CMSApp.models import Report
 from api.latitudelongitude import get_latlng
 from django.urls import reverse
@@ -59,6 +59,9 @@ def detail(request, report_pk):
 
 from api.Facade_API import FacadeAPI
 f = FacadeAPI()
+
+def somethingnew(request):
+    return JsonResponse({'foo': 'bar'})
 
 def get_haze_data():
     haze = f.getHaze()

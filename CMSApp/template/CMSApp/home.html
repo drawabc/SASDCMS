@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="row">  
-        <div class="col-2"></div>
+        <div class="col-1"></div>
         <div class="col-md">
             <div id="myMap"></div>
             <script>
@@ -120,7 +120,7 @@
 
         
         <div class="col-sm">
-            <ul class="nav nav-pills nav-stacked anyClass" style="width: 60%;">
+            <ul class="nav nav-pills nav-stacked anyClass" style="width: 70%;">
                 {% for report in report_list %}
                 <li class="nav-item" style="width: 100%;">
                 <a href="{% url 'CMSApp:home' %}?postal={{ report.postal_code }}" class="bg-dark text-white list-group-item list-group-item-action" style="width: 95%;">
