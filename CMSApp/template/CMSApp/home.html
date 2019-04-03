@@ -3,7 +3,6 @@
 {% block content %}
 
     <div class="row">  
-        <div class="col-1"></div>
         <div class="col-md">
             <div id="myMap"></div>
             <script>
@@ -77,6 +76,14 @@
                                     title: markers[mark]["name"]
                                 });
                             }
+                            var image = {
+                                url: 'https://cdn2.iconfinder.com/data/icons/weather-solid-4/96/Weather-cloud-rain-bright-sun-lighting-humidity-rain-42-512.png',
+                                 scaledSize: new google.maps.Size(50, 50), // scaled size
+                                // The origin for this image is (0, 0).
+                                origin: new google.maps.Point(0, 0),
+                                // The anchor for this image is the base of the flagpole at (0, 32).
+                                anchor: new google.maps.Point(25, 50)
+                            };
                             for (haz in haze){
                                 temp = haze[haz]["location"];
                                 temp = { lat: parseFloat(temp["latitude"]), lng: parseFloat(temp["longitude"])};
@@ -84,7 +91,7 @@
                                     position: temp,
                                     map: map,
                                     title: haz,
-                                    icon: 'https://cdn4.iconfinder.com/data/icons/wthr/32/659098-cloud-fog-512.png'
+                                    icon: image
                                 });
 
                                 var infowindow = new google.maps.InfoWindow();
