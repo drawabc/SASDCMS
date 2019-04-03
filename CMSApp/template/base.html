@@ -41,11 +41,12 @@
                                 <a id = "home" class="nav-item nav-link" href="{% url 'CMSApp:home' %}">Home</a>
                                 <a id = "input" class="nav-item nav-link" href="{% url 'CMSApp:input' %}">Input</a>
                                 <a id = "dashboard" class="nav-item nav-link" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
+                                <a id = "archive" class="nav-item nav-link" href="{% url 'CMSApp:archive' %}">Archive</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}
                         Hi {{ user.username }}!&nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' user.pk %}'" class="ui primary button">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' %}'" class="ui primary button">
                             Profile
                         </button>&nbsp;
                         <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">

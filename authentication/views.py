@@ -58,6 +58,7 @@ def profile(request):
     user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'registration/profile.html')
 
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
