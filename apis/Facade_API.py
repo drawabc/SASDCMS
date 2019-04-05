@@ -1,9 +1,9 @@
-from api.Haze import Haze
-from api.Email import email
-from api.Dengue import dengue_api
-from api.sms import SMS
-from api.Twitter import twitter
-from api.Telegram import telegram_api
+from apis.Haze import Haze
+from apis.Email import email
+from apis.Dengue import dengue_api
+from apis.sms import SMS
+from apis.Twitter import twitter
+from apis.Telegram import telegram_api
 #import random
 
 class FacadeAPI(object):

@@ -3,9 +3,31 @@
 {% block content %}
 
     <div class="row">  
-        <div class="col-1"></div>
         <div class="col-md">
             <div id="myMap"></div>
+            <div style="height:2px;">&nbsp;</div>
+            <div class="row">
+                <label class="switch">
+                    <input type="checkbox" onclick="toggleDengue();" checked>
+                    <span class="slider round"></span>
+                </label>
+                <font size="5">&nbsp;Dengue</font>
+            </div>
+            <div class="row">
+                <label class="switch">
+                    <input type="checkbox" onclick="toggleHaze();" checked>
+                    <span class="slider round"></span>
+                </label>
+                <font size="5">&nbsp;Haze</font>
+            </div>
+            <div class="row">
+                <label class="switch">
+                    <input type="checkbox" onclick="toggleReport();" checked>
+                    <span class="slider round"></span>
+                </label>
+                <font size="5">&nbsp;Report</font>
+            </div>
+
             <script>
                         var map;
                         var markers = {{ markers|safe }};
@@ -18,6 +40,81 @@
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
                         var temp;
+                        var dengueCheck = 1;
+                        var hazeCheck = 1;
+                        var reportCheck = 1;
+                        function toggleDengue(){
+                            dengueCheck = dengueCheck + 1;
+                            dengueCheck = dengueCheck % 2;
+                            initMap();
+                        }
+                        function toggleReport(){
+                            reportCheck = reportCheck + 1;
+                            reportCheck = reportCheck % 2;
+                            initMap();
+                        }
+                        function toggleHaze(){
+                            hazeCheck = hazeCheck + 1;
+                            hazeCheck = hazeCheck % 2;
+                            initMap();
+                        }
+                        function showHaze(map){
+                            var image = {
+                                url: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/699966-icon-1-cloud-512.png',
+                                 scaledSize: new google.maps.Size(50, 50), // scaled size
+                                // The origin for this image is (0, 0).
+                                origin: new google.maps.Point(0, 0),
+                                // The anchor for this image is the base of the flagpole at (0, 32).
+                                anchor: new google.maps.Point(25, 50)
+                            };
+                            for (haz in haze){
+                                temp = haze[haz]["location"];
+                                temp = { lat: parseFloat(temp["latitude"]), lng: parseFloat(temp["longitude"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: haz,
+                                    icon: image
+                                });
+
+                                var infowindow = new google.maps.InfoWindow();
+                                var content = '<div><strong>' + haz + '</strong><br>' +
+                                        'PSI: ' + haze[haz]["psi"] + '<br>' +
+                                        'PM25: '+ haze[haz]["pm25"] + '</div>'
+
+
+                               google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                                    return function() {
+                                        infowindow.setContent(content);
+                                        infowindow.open(map, this);
+                                    };
+                               })(marker,content,infowindow));
+                            }
+                        }
+                        function showReport(map){
+                            for(mark in markers){
+                                temp = markers[mark]["latlng"];
+                                if (temp["lat"] == "NA") continue;
+                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: markers[mark]["name"]
+                                });
+                            }
+                        }
+                        function showDengue(map) {
+                            for(d in dengue){
+                                outer = dengue[d];
+                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            }
+                            map.data.setStyle({
+                                    fillColor: 'red',
+                                    strokeWeight: 10,
+                                    strokeColor: 'red'
+                            });
+                        }
+
                         function initMap() {
                             var geocoder;
                             map = new google.maps.Map(document.getElementById('myMap'), {
@@ -57,50 +154,15 @@
                                 });
 
                              }
-                            for(d in dengue){
-                                outer = dengue[d];
-                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            if(dengueCheck==1){
+                                showDengue(map);
                             }
-                            map.data.setStyle({
-                                    fillColor: 'red',
-                                    strokeWeight: 10,
-                                    strokeColor: 'red'
-                            });
-
-                            for(mark in markers){
-                                temp = markers[mark]["latlng"];
-                                if (temp["lat"] == "NA") continue;
-                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
-                                var marker = new google.maps.Marker({
-                                    position: temp,
-                                    map: map,
-                                    title: markers[mark]["name"]
-                                });
+                            if(reportCheck==1){
+                                showReport(map);
                             }
-                            for (haz in haze){
-                                temp = haze[haz]["location"];
-                                temp = { lat: parseFloat(temp["latitude"]), lng: parseFloat(temp["longitude"])};
-                                var marker = new google.maps.Marker({
-                                    position: temp,
-                                    map: map,
-                                    title: haz,
-                                    icon: 'https://cdn4.iconfinder.com/data/icons/wthr/32/659098-cloud-fog-512.png'
-                                });
-
-                                var infowindow = new google.maps.InfoWindow();
-                                var content = '<div><strong>' + haz + '</strong><br>' +
-                                        'PSI: ' + haze[haz]["psi"] + '<br>' +
-                                        'PM25: '+ haze[haz]["pm25"] + '</div>'
-
-
-                               google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
-                                    return function() {
-                                        infowindow.setContent(content);
-                                        infowindow.open(map, this);
-                                    };
-                               })(marker,content,infowindow));
+                            if(hazeCheck==1){
+                                showHaze(map);
                             }
-
                             //part of center map button
                             var centerControlDiv = document.createElement('div');
                             var centerControl = new CenterControl(centerControlDiv, map);
