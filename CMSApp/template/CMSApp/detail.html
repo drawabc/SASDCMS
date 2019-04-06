@@ -13,18 +13,18 @@
                 <div class="p-2 bg-dark text-white">Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }}</div>
                 <div class="p-2 bg-dark text-white">
                   Type:
-                  {% ifequal report.type "FF" %}
-                      Fire-fighting
-                  {% endifequal %}
-                  {% ifequal report.type "EA" %}
-                      Emergency Ambulance
-                  {% endifequal %}
-                  {% ifequal report.type "RE" %}
-                      Rescue & Evacuation
-                  {% endifequal %}
-                  {% ifequal report.type "GL" %}
-                      Gas Leak Control
-                  {% endifequal %}
+                    {% ifequal report.type "FF" %}
+                    <small class="text-danger"> <em>Fire-fighting</em> </small>
+                    {% endifequal %}
+                    {% ifequal report.type "EA" %}
+                        <small class="text-primary"> <em>Emergency Ambulance</em> </small>
+                    {% endifequal %}
+                    {% ifequal report.type "RE" %}
+                        <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
+                    {% endifequal %}
+                    {% ifequal report.type "GL" %}
+                        <small class="text-success"> <em>Gas Leak Control</em> </small>
+                    {% endifequal %}
                 </div>
                 <div class="p-2 bg-dark text-white"><p>
                     <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
