@@ -12,13 +12,24 @@ class Report(models.Model):
         ('GL', 'Gas Leak Control'),
     )
     name = models.CharField(max_length=120)
-    mobile = models.CharField(max_length=12)
+    mobile = models.CharField(max_length=8)
     location = models.CharField(max_length=500)
     unit_number = models.CharField(max_length=20)
-    postal_code = models.CharField(max_length=10)
+    postal_code = models.CharField(max_length=6)
     description = models.CharField(max_length=500)
     type = models.CharField(max_length=2, choices=ASSISTANCE_TYPE_CHOICES)
     time = models.DateTimeField(default=datetime.datetime.now(tz=tz))
 
     def __str__(self):
         return "Report " + str(self.pk) + " at " + str(self.time.astimezone(tz))
+
+
+class CivilianData(models.Model):
+    nric = models.CharField(max_length=9, unique=True)
+    name = models.CharField(max_length=120)
+    region = models.CharField(max_length=60)
+    mobile = models.CharField(max_length=8)
+    email = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.pk) + ". " + str(self.name) + str(self.nric)

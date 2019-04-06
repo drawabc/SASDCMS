@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="height:15%"></div>
+    <h1>Input Data</h1>
+    <div class="card mx-auto" style="width: 18rem;" >
+        <div class="card-body bg-dark text-light">
+            <form method="post" align="left"> {% csrf_token %}
+                <div align="center">
+                    {{ form.as_p }}
+                    Region:
+                    <input type="radio" name="region" value="NORTH-EAST"> NORTH-EAST <br>
+                    <input type="radio" name="region" value="WEST"> WEST <br>
+                    <input type="radio" name="region" value="CENTRAL"> CENTRAL <br>
+                    <input type="radio" name="region" value="EAST"> EAST <br>
+                    <input type="radio" name="region" value="NORTH"> NORTH <br>
+                    <button type="submit" class="btn btn-default bg-success text-light">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
