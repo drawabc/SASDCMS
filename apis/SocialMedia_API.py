@@ -1,5 +1,5 @@
 #The socialMedia only outputs the changes in PSI for now.
-from api import Facade_API
+from apis import Facade_API
 
 class SocialMedia(object):
     def __init__(self):
