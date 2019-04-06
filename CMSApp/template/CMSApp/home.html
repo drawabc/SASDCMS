@@ -84,7 +84,7 @@
                                         'PM25: '+ haze[haz]["pm25"] + '</div>'
 
 
-                               google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                                google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
                                     return function() {
                                         infowindow.setContent(content);
                                         infowindow.open(map, this);
@@ -100,7 +100,7 @@
                                 var marker = new google.maps.Marker({
                                     position: temp,
                                     map: map,
-                                    title: markers[mark]["name"]
+                                    title: markers[mark]["name"]p
                                 });
                             }
                         }
