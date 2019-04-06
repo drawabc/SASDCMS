@@ -5,30 +5,41 @@
     <div class="row">  
         <div class="col-1"></div>
         <div class="col-7">
-            <div id="myMap"></div>
-            <div style="height:2px;">&nbsp;</div>
-            <div class="row">
-                <label class="switch">
-                    <input type="checkbox" onclick="toggleDengue();" checked>
-                    <span class="slider round"></span>
-                </label>
-                <font size="5">&nbsp;Dengue</font>
+            
+            <div class ="row">
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleDengue();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Dengue</font>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleHaze();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Haze</font>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleReport();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Report</font>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <label class="switch">
-                    <input type="checkbox" onclick="toggleHaze();" checked>
-                    <span class="slider round"></span>
-                </label>
-                <font size="5">&nbsp;Haze</font>
-            </div>
-            <div class="row">
-                <label class="switch">
-                    <input type="checkbox" onclick="toggleReport();" checked>
-                    <span class="slider round"></span>
-                </label>
-                <font size="5">&nbsp;Report</font>
-            </div>
-
+            <div class ="row">
+                    <div id="myMap"></div>
+                    <div style="height:2px;">&nbsp;</div>
+                </div>
+            
             <script>
                         var map;
                         var markers = {{ markers|safe }};

@@ -4,16 +4,16 @@
 
 <div style="height:15%"></div>
 <div class="card mx-auto" style="width: 18rem;" >
-    <div class="card-header bg-secondary text-light">  
+    <div class="card-header " style="background-color:#fdd4c0">  
         <h2 align="center"> Login</h2>
     </div>
 
-    <div class="card-body bg-dark text-light">
+    <div class="card-body ">
 <form method="post" align="center">
   {% csrf_token %}
   <div align="center">
       {{ form.as_p }}
-  <button type="submit" class="btn btn-default bg-success text-light">
+  <button type="submit" class="btn btn-success">
     Login
   </button>
   </div>
