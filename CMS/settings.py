@@ -128,21 +128,6 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-from celery.schedules import crontab
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_TIMEZONE = 'Asia/Singapore'
-# Let's make things happen
-CELERY_BEAT_SCHEDULE = {
- 'send-summary-every-hour': {
-       'task': 'summary',
-        # There are 4 ways we can handle time, read further
-       'schedule': 10,
-        # If you're using any arguments
-       'args': ('We don’t need any'),
-    },
-    # Executes every Friday at 4pm
-    'send-notification-on-friday-afternoon': {
-         'task': 'scheduler.tasks.send_notification',
-         'schedule': crontab(hour=16, day_of_week=5),
-        },
-}
+
+
+CSRF_COOKIE_SECURE = True
