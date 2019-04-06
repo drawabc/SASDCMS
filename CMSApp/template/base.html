@@ -15,7 +15,7 @@
         </title>
         <style>
             .anyClass {
-                height:600px;
+                height:650px;
                 overflow-y: scroll;
             }
             #myMap {
@@ -87,40 +87,44 @@
             .slider.round:before {
               border-radius: 50%;
             }
+            body{
+              background-color:#ffffff;
+            }
         </style>
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" style="background-color:#fdd4c0">
                 <div class="col-lg-12">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <nav class="navbar navbar-expand-lg navbar-light">
                         <a class="navbar-brand" href="#">CMS</a>
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
                             <div class="nav nav-tabs">
-                                <a id = "home" class="nav-item nav-link" href="{% url 'CMSApp:home' %}">Home</a>
-                                <a id = "input" class="nav-item nav-link" href="{% url 'CMSApp:input' %}">Input</a>
-                                <a id = "dashboard" class="nav-item nav-link" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
-                                <a id = "archive" class="nav-item nav-link" href="{% url 'CMSApp:archive' %}">Archive</a>
+                                <a id = "home" class="nav-item nav-link text-dark" href="{% url 'CMSApp:home' %}">Home</a>
+                                <a id = "input" class="nav-item nav-link text-dark " href="{% url 'CMSApp:input' %}">Input</a>
+                                <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
+                                <a id = "archive" class="nav-item nav-link text-dark" href="{% url 'CMSApp:archive' %}">Archive</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}
                         Hi {{ user.username }}!&nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:profile' %}'" class="ui primary button">
+                        <button type="button" class="btn btn-outline-dark" onclick="window.location.href='{% url 'authentication:profile' %}'" style="background-color:#ffa67a">
                             Profile
                         </button>&nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'authentication:logout' %}'" class="ui primary button">
+                        <button type="button" class="btn btn-outline-dark" onclick="window.location.href='{% url 'authentication:logout' %}'" style="background-color:#ffa67a">
                             Logout
                         </button>
                         {% else %}
-                        You are not logged in
+                        You are not logged in &ThinSpace;
                         <br>
-                        <button onclick="window.location.href='{% url 'authentication:login' %}'" class="btn btn-secondary bg-success text-light">
+                        <button onclick="window.location.href='{% url 'authentication:login' %}'" class="btn btn-outline-dark" style="background-color:#ffa67a">
                             Login
                         </button>
                     {% endif %}
                     </nav>
                 </div>
             </div>
+            <div style="height:5%"></div>  
             {% block content %}
             {% endblock content %}
         </div>

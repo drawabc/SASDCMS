@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-
     <div class="container-fluid justify-content-center" align="center">
     <form method="post"> {% csrf_token %}
           {{ errors }}
-          <div class="col-md-6 bg-dark text-white" align="center">
+          <div class="col-md-6 text-dark" align="center" style="border-style:solid; border-color:#000">
             <div class="p-2"><h1><b>Input Information</b></h1></div>
                 <div class="form-group row" align="right">
                     <label for="name_1" class="col-sm-4 col-form-label">Name</label>
@@ -49,32 +48,32 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="EA" value="EA" checked>
                     <label class="form-check-label" for="EA">
-                        <small class="text-primary"> <em>Emergency Ambulance</em> </small>
+                        Emergency Ambulance
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="RE" value="RE">
                     <label class="form-check-label" for="RE">
-                        <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
+                        Rescue & Evacuation
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="FF" value="FF">
                     <label class="form-check-label" for="FF">
-                        <small class="text-danger"> <em>Fire-fighting</em> </small>
+                        Fire-fighting
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="GL" value="GL">
                     <label class="form-check-label" for="GL">
-                        <small class="text-success"> <em>Gas Leak Control</em> </small>
+                        Gas Leak Control
                     </label>
                 </div>
             </div>
         </div>
         <div class="col-md-12 row-centered">
                 <div class="form-group row">
-                    <div class="col-sm-12" align="center">
+                    <div class="col" align="center">
                         <button type="submit" class="btn btn-success ">Submit</button>
                     </div>
                   </div>

@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container" style="min-height: 50%; display: flex; flex-direction: 'row'">
-        <div class="row"></div>
+    
+    <div style="height:5%"></div>  
+    <div class="container justify-content-center" 
+    style="min-height: 50%; display: flex; flex-direction: 'row'; border-style:solid; border-color:#000">
         <div class="row">
-            <div class="col-1"></div>
-            <div class="col-11" align="center">
-                <table class="table bg-dark text-white">
+            <div class="col" align="center">
+                <h1><b>Archive</b></h1>
+                <table class="table text-dark">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -28,16 +30,16 @@
                             <td>{{ report.description }}</td>
                             <td>
                                 {% ifequal report.type "FF" %}
-                                    <small class="text-danger"> <em>Fire-fighting</em> </small>
+                                    Fire-fighting
                                 {% endifequal %}
                                 {% ifequal report.type "EA" %}
-                                    <small class="text-primary"> <em>Emergency Ambulance</em> </small>
+                                    Emergency Ambulance
                                 {% endifequal %}
                                 {% ifequal report.type "RE" %}
-                                    <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
+                                    Rescue & Evacuation
                                 {% endifequal %}
                                 {% ifequal report.type "GL" %}
-                                    <small class="text-success"> <em>Gas Leak Control</em> </small>
+                                    Gas Leak Control
                                 {% endifequal %}
                             </td>
                             <td>
