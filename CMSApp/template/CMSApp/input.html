@@ -1,80 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="container-fluid justify-content-center">
+    <div class="container-fluid justify-content-center" align="center">
     <form method="post"> {% csrf_token %}
           {{ errors }}
-          <div class="col-md-6 bg-dark text-white" align="left">
+          <div class="col-md-6 bg-dark text-white" align="center">
             <div class="p-2"><h1><b>Input Information</b></h1></div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="name_1" class="col-sm-4 col-form-label">Name</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="name_1" name="name" placeholder="Bobby" required>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="mobilenum" class="col-sm-4 col-form-label">Mobile</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="mobilenum" name="mobile" placeholder="88888888" required>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="location" class="col-sm-4 col-form-label">Location</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="location" name="location" placeholder="Hogwarts">
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="unit" class="col-sm-4 col-form-label">Unit Number</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="unit" name="unit" placeholder="B21" required>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="postalCode" class="col-sm-4 col-form-label">Postal Code</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="postalCode" name="postal" placeholder="639221" required>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" align="right">
                     <label for="desc" class="col-sm-4 col-form-label">Description</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="desc" name="description" placeholder="Fall from bike" required>
                     </div>
                 </div>
-          <div class="form-group row">
+          <div class="form-group row" align="right">
               <!-- shift right -->
             <label class="col-sm-4 col-form-label">Type of emergency</label>
-            <div class="col-sm-4" id="radios">
+            <div class="col-sm-4" id="radios" align="left">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="EA" value="EA" checked>
                     <label class="form-check-label" for="EA">
-                        Emergency Ambulance
+                        <small class="text-primary"> <em>Emergency Ambulance</em> </small>
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="RE" value="RE">
                     <label class="form-check-label" for="RE">
-                        Rescue and Evacuation
+                        <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="FF" value="FF">
                     <label class="form-check-label" for="FF">
-                        Fire-fighting
+                        <small class="text-danger"> <em>Fire-fighting</em> </small>
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="GL" value="GL">
                     <label class="form-check-label" for="GL">
-                        Gas Leak Control
+                        <small class="text-success"> <em>Gas Leak Control</em> </small>
                     </label>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 row-centered">
+        <div class="col-md-12 row-centered">
                 <div class="form-group row">
-                    <div class="col-sm-10" align="right">
+                    <div class="col-sm-12" align="center">
                         <button type="submit" class="btn btn-success ">Submit</button>
                     </div>
                   </div>

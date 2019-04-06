@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-11" align="center">
-                <table class="table">
+                <table class="table bg-dark text-white">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -28,20 +28,20 @@
                             <td>{{ report.description }}</td>
                             <td>
                                 {% ifequal report.type "FF" %}
-                                    Fire-fighting
+                                    <small class="text-danger"> <em>Fire-fighting</em> </small>
                                 {% endifequal %}
                                 {% ifequal report.type "EA" %}
-                                    Emergency Ambulance
+                                    <small class="text-primary"> <em>Emergency Ambulance</em> </small>
                                 {% endifequal %}
                                 {% ifequal report.type "RE" %}
-                                    Rescue & Evacuation
+                                    <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
                                 {% endifequal %}
                                 {% ifequal report.type "GL" %}
-                                    Gas Leak Control
+                                    <small class="text-success"> <em>Gas Leak Control</em> </small>
                                 {% endifequal %}
                             </td>
                             <td>
-                                <a href="{% url 'CMSApp:detail' report.pk %}" class="btn btn-primary">
+                                <a href="{% url 'CMSApp:detail' report.pk %}" class="btn btn-success">
                                     Details
                                 </a>
                             </td>
