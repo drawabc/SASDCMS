@@ -84,7 +84,7 @@
                                         'PM25: '+ haze[haz]["pm25"] + '</div>'
 
 
-                               google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                                google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
                                     return function() {
                                         infowindow.setContent(content);
                                         infowindow.open(map, this);
@@ -93,14 +93,30 @@
                             }
                         }
                         function showReport(map){
+                            var image;
+                            var urlx;
                             for(mark in markers){
+                                // green
+                                if (markers[mark]["type"]=="GL"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+                                }
+                                else if (markers[mark]["type"]=="RE"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+                                }
+                                else if (markers[mark]["type"]=="EA"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                                }
+                                else{
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+                                }
                                 temp = markers[mark]["latlng"];
                                 if (temp["lat"] == "NA") continue;
                                 temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
                                 var marker = new google.maps.Marker({
                                     position: temp,
                                     map: map,
-                                    title: markers[mark]["name"]
+                                    title: markers[mark]["name"],
+                                    icon: urlx
                                 });
                             }
                         }

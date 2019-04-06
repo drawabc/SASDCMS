@@ -25,10 +25,10 @@ def home(request):
     haze = get_haze_data()
     markers = []
     dengue = get_dengue_data()
-    dengue = dengue['data']
-    print(len(dengue))
+    dengue = json.dumps({})
+    #print(len(dengue))
     for report in report_list:
-        markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code)})
+        markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
     markers = json.dumps(markers)
 
     return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue})
