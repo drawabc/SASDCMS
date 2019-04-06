@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from CMSApp.models import Report
+from CMSApp.models import Report, CivilianData
 from apis.latitudelongitude import get_latlng
 from django.urls import reverse
 from django.core import serializers
@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from authentication import urls
 from django.core.mail import send_mail
 from django.conf import settings
+from .forms import CivilianForm
 
 # Create your views here.
 
@@ -17,7 +18,6 @@ def home(request):
     report_list = Report.objects.all().filter().order_by("time")
     try:
         postal = request.GET["postal"]
-        #postal = int(postal)
         center = get_latlng(postal)
     except:
         center = -1
@@ -90,5 +90,16 @@ def get_dengue_data():
     info = url_parser.read()
     json_dict = json.loads(info.decode('utf-8'))
     return json_dict
-# social media
-# sending email
+
+@login_required()
+def manage_public(request):
+    civ_list = CivilianData.objects.all()
+    return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
+
+
+def add_public(request):
+    form = CivilianForm()
+    if request.method == "POST":
+        return render(request, "CMSApp/add_civ.html", {'form':form})
+    else:
+        return render(request, "CMSApp/add_civ.html", {'form':form})

@@ -25,10 +25,9 @@ class Report(models.Model):
 
 
 class CivilianData(models.Model):
-    nric = models.CharField(max_length=9)
+    nric = models.CharField(max_length=9, unique=True)
     name = models.CharField(max_length=120)
-    lattitude = models.FloatField()
-    longitude = models.FloatField()
+    region = models.CharField(max_length=60)
     mobile = models.CharField(max_length=8)
     email = models.CharField(max_length=50)
 
