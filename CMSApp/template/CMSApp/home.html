@@ -34,6 +34,15 @@
                         <font size="5">&nbsp;Report</font>
                     </div>
                 </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleShelter();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;CD Shelter</font>
+                    </div>
+                </div>
             </div>
             <div class ="row">
                     <div id="myMap"></div>
@@ -57,6 +66,7 @@
                         var dengueCheck = 1;
                         var hazeCheck = 1;
                         var reportCheck = 1;
+                        var shelterCheck = 1;
                         
                         function toggleDengue(){
                             dengueCheck = dengueCheck + 1;
@@ -72,6 +82,11 @@
                             hazeCheck = hazeCheck + 1;
                             hazeCheck = hazeCheck % 2;
                             initMap();
+                        }
+                        function toggleShelter(){
+                            shelterCheck = shelterCheck + 1;
+                            shelterCheck = shelterCheck % 2;
+                            initMap()
                         }
                         function showHaze(map){
                             var image = {
@@ -106,19 +121,23 @@
                                })(marker,content,infowindow));
                             }
                         }
-                        function showCDS(map){
-                            //var image;
-                            //var urlx;
+                        function showShelter(map){
+
+                            var locations = [];
                             for(cd in cds){
-                                // green
                                 temp = cds[cd];
                                 temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
-                                var marker = new google.maps.Marker({
-                                    position: temp,
-                                    map: map,
-                                    //icon: urlx
-                                });
+                                locations.push(temp);
                             }
+                            var markers = locations.map(function(location) {
+                                  return new google.maps.Marker({
+                                    position: location,
+                                  });
+                                });
+
+                            // Add a marker clusterer to manage the markers.
+                            var markerCluster = new MarkerClusterer(map, markers,
+                                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
                         }
                         function showReport(map){
                             var image;
@@ -208,7 +227,9 @@
                             if(hazeCheck==1){
                                 showHaze(map);
                             }
-                            showCDS(map);
+                            if(shelterCheck==1){
+                                showShelter(map);
+                            }
                             //part of center map button
                             var centerControlDiv = document.createElement('div');
                             var centerControl = new CenterControl(centerControlDiv, map);
@@ -223,7 +244,9 @@
                             }
                         }
                     </script>
-            <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap'></script>
+            <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+            </script>
+            <script async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap'></script>
         </div>
 
         

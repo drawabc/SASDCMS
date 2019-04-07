@@ -8,8 +8,8 @@
             </div>
         </div>
         <div class="card-body ">
-        <form class="needs-validation" method="post"> {% csrf_token %}
-          {{ errors }}
+        <form class="needs-validation" method="post">
+            {% csrf_token %}
                 <div class="form-group row" align="right">
                     <label for="name_1" class="col-sm-4 col-form-label">Name</label>
                     <div class="col-sm-5">
@@ -25,7 +25,7 @@
                 <div class="form-group row" align="right">
                     <label for="mobilenum" class="col-sm-4 col-form-label">Mobile</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="mobilenum" name="mobile" placeholder="+6588888888" required>
+                        <input type="text" class="form-control" id="mobilenum" name="mobile" placeholder="88888888" required>
                         <div class="invalid-feedback">
                           The input value must be a valid phone number
                         </div>
@@ -120,7 +120,7 @@ function enableSubmit(){
 function checkValid(id){
   var postal_regex = /^\d{6}$/;
   var name_regex = /^[a-zA-Z ]+$/;
-  var mobile_regex = /^\+{1}\d{10}$/;
+  var mobile_regex = /^\d{8}$/;
   var mytag = document.getElementById(id);
   switch(id) {
   case "name_1":

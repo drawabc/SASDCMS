@@ -3,7 +3,7 @@ from django import forms
 
 from .models import CivilianData
 
-REGIONS = [('NORTH-EAST','NORTH-EAST'), ('NORTH', 'NORTH'), ('WEST', 'WEST'), ('EAST', 'EAST'), ('SOUTH', 'SOUTH'), ('CENTRAL', 'CENTRAL')]
+REGIONS = [('NORTH-EAST','NORTH-EAST'), ('NORTH', 'NORTH'), ('WEST', 'WEST'), ('EAST', 'EAST'), ('CENTRAL', 'CENTRAL')]
 
 class CivilianForm(ModelForm):
     def __init__(self, *args, **kwargs):

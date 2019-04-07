@@ -14,11 +14,10 @@ import urllib.request as ur
 import json
 import pprint
 from .forms import CivilianForm
-
 # Create your views here.
 
 def home(request):
-    report_list = Report.objects.all().filter().order_by("time")
+    report_list = Report.objects.all().filter().order_by("time")[::-1]
     try:
         postal = request.GET["postal"]
         center = get_latlng(postal)
@@ -34,7 +33,6 @@ def home(request):
         dengue = get_dengue_data()["data"]
     except:
         dengue = json.dumps({})
-
     cds = get_cd_shelter()
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
@@ -93,7 +91,10 @@ def get_cd_shelter():
     return json_dict
 
 def get_haze_data():
-    haze = 'https://haze-data.herokuapp.com'
+    url = 'https://haze-data.herokuapp.com'
+    url_parser = ur.urlopen(ur.Request(url))
+    info = url_parser.read()
+    haze = json.loads(info.decode('utf-8'))
     haze_template = {}
     for key, value in haze["location"].items():
         haze_template[key] = {}
