@@ -91,7 +91,7 @@ def get_dengue_data():
     json_dict = json.loads(info.decode('utf-8'))
     return json_dict
 
-@login_required()
+@login_required
 def manage_public(request):
     civ_list = CivilianData.objects.all()
     return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
@@ -103,3 +103,12 @@ def add_public(request):
         return render(request, "CMSApp/add_civ.html", {'form':form})
     else:
         return render(request, "CMSApp/add_civ.html", {'form':form})
+
+@login_required
+def del_public(request, civ_pk):
+    data = get_object_or_404(CivilianData, pk=civ_pk)
+    if request.method == "POST":
+        data.delete()
+        return HttpResponseRedirect(reverse('CMSApp:manage'))
+    else:
+        return render(request, "CMSApp/del_civ.html", {'civ' : data})
