@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from CMSApp import views
 
 urlpatterns = [
     url(r'^_admin/', admin.site.urls),
-    url(r'^accounts/', include('django.contrib.auth.urls') ),
-    url(r'^$', views.home, name='home'),
-    url(r'^input/$', views.input, name='input'),
-    url(r'^manage/$', views.manage_dashboard, name='manage_dashboard')
+    url(r'^accounts/', include('authentication.urls') ),
+    url(r'^', include('CMSApp.urls'))
 ]
