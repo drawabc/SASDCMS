@@ -7,6 +7,7 @@
         <div class="card-body bg-dark text-light">
             <form method="post" align="left"> {% csrf_token %}
                 <div align="center">
+                    {{ error }}
                     {{ form.as_p }}
                     Region:
                     <input type="radio" name="region" value="NORTH-EAST"> NORTH-EAST <br>

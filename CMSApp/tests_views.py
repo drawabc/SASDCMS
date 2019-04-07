@@ -15,6 +15,11 @@ class ViewURLsTest(TestCase):
         found = resolve('/input/')
         self.assertEqual(found.func, expected)
 
+    def test_detail_pass(self):
+        expected = detail
+        found = resolve('/detail/')
+        self.assertEqual(found.func, expected)
+
     def test_archive_pass(self):
         expected = archive
         found = resolve('/archive/')
