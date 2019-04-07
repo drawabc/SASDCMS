@@ -124,24 +124,22 @@ def del_public(request, civ_pk):
         civ_data.delete()
         return HttpResponseRedirect(reverse('CMSApp:manage'))
     else:
-        return render(request, "CMSApp/del_civ.html", {'civ' : data})
+        return render(request, "CMSApp/del_civ.html", {'civ' : civ_data})
 
 # reference: https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
 # possible better alternative: CivilianData._do_update
 # possible better alternative: civ.update_civ_data()
 def update_public(request, civ_pk):
-        civ_data = get_object_or_404(CivilianData, pk = civ_pk)
-        # following code runs if no exception
-        if request.method == "GET":
-            form = CivilianForm(civ_data)
-            return render(request, "CMSApp/add_civ.html", {'form': form})
-
-        elif request.method == "POST":
-            form = CivilianForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(reverse('CMSApp:manage'))
-            else:
-                return render(request, "CMSApp/add_civ.html", {'form': form})
+    civ_data = get_object_or_404(CivilianData, pk=civ_pk)
+    # following code runs if no exception
+    if request.method == "POST":
+        form = CivilianForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('CMSApp:manage'))
         else:
             return render(request, "CMSApp/add_civ.html", {'form': form})
+    else:
+        # request.method == "GET"
+        form = CivilianForm(instance=civ_data)
+        return render(request, "CMSApp/add_civ.html", {'form': form})
