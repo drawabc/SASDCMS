@@ -48,6 +48,8 @@
                             address = { lat: parseFloat(address["lat"]), lng: parseFloat(address["lng"])};
                         }
                         var dengue = {{ dengue|safe }};
+                        var cds = {{ cds|safe }};
+                        console.log(cds);
                         var haze = {{ haze|safe }};
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
@@ -55,6 +57,7 @@
                         var dengueCheck = 1;
                         var hazeCheck = 1;
                         var reportCheck = 1;
+                        
                         function toggleDengue(){
                             dengueCheck = dengueCheck + 1;
                             dengueCheck = dengueCheck % 2;
@@ -101,6 +104,20 @@
                                         infowindow.open(map, this);
                                     };
                                })(marker,content,infowindow));
+                            }
+                        }
+                        function showCDS(map){
+                            //var image;
+                            //var urlx;
+                            for(cd in cds){
+                                // green
+                                temp = cds[cd];
+                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    //icon: urlx
+                                });
                             }
                         }
                         function showReport(map){
@@ -191,6 +208,7 @@
                             if(hazeCheck==1){
                                 showHaze(map);
                             }
+                            showCDS(map);
                             //part of center map button
                             var centerControlDiv = document.createElement('div');
                             var centerControl = new CenterControl(centerControlDiv, map);
