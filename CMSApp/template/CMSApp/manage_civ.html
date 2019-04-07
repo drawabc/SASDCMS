@@ -32,6 +32,7 @@
                             <td>{{ civ.region }}</td>
                             <td>{{ civ.mobile }}</td>
                             <td>{{ civ.email }}</td>
+                            <td><a href="{% url 'CMSApp:update_public' civ.pk %}">Update</a></td>
                             <td><a href="{% url 'CMSApp:delete_public' civ.pk %}">Delete</a></td>
                         </tr>
                     {% endfor %}
