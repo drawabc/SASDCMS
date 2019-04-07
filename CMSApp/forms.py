@@ -1,13 +1,16 @@
 from django.forms import ModelForm
+from django import forms
 
 from .models import CivilianData
 
-class AddCivilianForm(ModelForm):
-    class Meta:
-        model = CivilianData
-        fields = ['nric', 'name', 'mobile', 'email']
+REGIONS = [('NORTH-EAST','NORTH-EAST'), ('NORTH', 'NORTH'), ('WEST', 'WEST'), ('EAST', 'EAST'), ('SOUTH', 'SOUTH')]
 
-class EditCivilianForm(ModelForm):
+class CivilianForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CivilianForm, self).__init__(*args, **kwargs)
+        # Making name required
+        self.fields['region'] = forms.ChoiceField(choices=REGIONS)
     class Meta:
         model = CivilianData
-        fields = ['nric', 'name', 'mobile', 'email', 'region']
+        fields = '__all__'
+
