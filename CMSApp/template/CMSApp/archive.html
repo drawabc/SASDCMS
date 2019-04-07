@@ -2,56 +2,62 @@
 
 {% block content %}
     
-    <div style="height:5%"></div>  
-    <div class="container justify-content-center" 
-    style="min-height: 50%; display: flex; flex-direction: 'row'; border-style:solid; border-color:#000">
-        <div class="row">
-            <div class="col" align="center">
+    <div class="card mx-auto" style="width: 45rem;" >
+        <div class="card-header " style="background-color:#fdd4c0">  
+            <div class="col" align="center">     
                 <h1><b>Archive</b></h1>
-                <table class="table text-dark">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Mobile</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for report in all_reports %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ report.name }}</td>
-                            <td>{{ report.mobile }}</td>
-                            <td>{{ report.location }} No. {{ report.unit_number }}, Singapore {{ report.postal_code }}</td>
-                            <td>{{ report.description }}</td>
-                            <td>
-                                {% ifequal report.type "FF" %}
-                                    Fire-fighting
-                                {% endifequal %}
-                                {% ifequal report.type "EA" %}
-                                    Emergency Ambulance
-                                {% endifequal %}
-                                {% ifequal report.type "RE" %}
-                                    Rescue & Evacuation
-                                {% endifequal %}
-                                {% ifequal report.type "GL" %}
-                                    Gas Leak Control
-                                {% endifequal %}
-                            </td>
-                            <td>
-                                <a href="{% url 'CMSApp:detail' report.pk %}" class="btn btn-success">
-                                    Details
-                                </a>
-                            </td>
+            </div>
+        </div>
 
+        <div class="card-body ">
+            <div class="row">
+                <div class="col" align="center">
+                    
+                    <table class="table text-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Details</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for report in all_reports %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ report.name }}</td>
+                                <td>{{ report.mobile }}</td>
+                                <td>{{ report.location }} No. {{ report.unit_number }}, Singapore {{ report.postal_code }}</td>
+                                <td>{{ report.description }}</td>
+                                <td>
+                                    {% ifequal report.type "FF" %}
+                                        Fire-fighting
+                                    {% endifequal %}
+                                    {% ifequal report.type "EA" %}
+                                        Emergency Ambulance
+                                    {% endifequal %}
+                                    {% ifequal report.type "RE" %}
+                                        Rescue & Evacuation
+                                    {% endifequal %}
+                                    {% ifequal report.type "GL" %}
+                                        Gas Leak Control
+                                    {% endifequal %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'CMSApp:detail' report.pk %}" class="btn btn-success">
+                                        Details
+                                    </a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -3,19 +3,21 @@
 {% block content %}
 <div style="height: 100px;"></div>
 
-    <div class="container w-25" align="center" style="border-style:solid; border-color:#000">
-        <div class="row justify-content-md-center">
-            <div class="col">
+    <div class="card mx-auto" style="width: 25rem;" >
+        <div class="card-header " style="background-color:#fdd4c0">  
+            <div class="row justify-content-center">
                 <h1><b>{{ user.username }}'s Profile</b></h1>
             </div>
         </div>
-        <div style="height:10%;"></div>
-        <div class="row">
-            <div class="col justify-content-md-center" >
+
+        <div class="card-body ">
+        <div class="row" align="center">
+            <div class="col" >
                 <a class="btn btn-default text-info ml-0 pl-0" href="{% url 'authentication:change_pwd'%}"> Change Password</a>
                 <div style="height:3px">&nbsp;</div>
                 <a class="btn btn-default text-info ml-0 pl-0" href="{% url 'authentication:logout' %}"> Logout</a>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
