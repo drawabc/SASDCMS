@@ -120,7 +120,7 @@ function enableSubmit(){
 function checkValid(id){
   var postal_regex = /^\d{6}$/;
   var name_regex = /^[a-zA-Z ]+$/;
-  var mobile_regex = /^\+?\d{10}$/;
+  var mobile_regex = /^\+{1}\d{10}$/;
   var mytag = document.getElementById(id);
   switch(id) {
   case "name_1":

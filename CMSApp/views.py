@@ -26,8 +26,15 @@ def home(request):
         center = -1
     center = json.dumps(center)
     markers = []
-    haze = get_haze_data()
-    dengue = get_dengue_data()["data"]
+    try:
+        haze = get_haze_data()
+    except:
+        haze = json.dumps({})
+    try:
+        dengue = get_dengue_data()["data"]
+    except:
+        dengue = json.dumps({})
+
     cds = get_cd_shelter()
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
@@ -51,6 +58,17 @@ def input(request):
             unit = request.POST["unit"]
             new_report = Report(name=name, mobile=mobile, location=location, type=type, postal_code=postal, description=desc, unit_number=unit)
             new_report.save()
+            #Sending SMS
+            #Need SMSV2.PY, latitudelongitude.py and Boundary_from_latlng.py
+            """django_dict = {"Type":type,"Description":desc,"Location":location,"name":name,"time": "operator": }
+            sender = "+12052939421"
+            receiverAgency = ["+6596579895"] #Jun En's phone
+            sms = SMSAPI()
+            #Hard coded this for now because sms uses twilio server which is severely limited to a number of phones
+            receiverRegions = {"NORTHEAST":[],"NORTH":[],"CENTRAL":[],"WEST":[],"EAST":[]}
+            region
+            sms.sendFormattedSMS(django_dict, sender,receiverAgency)
+            sms.sendFormattedSMS(django_dict, sender, receiverRegions[region])"""
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
 
@@ -60,17 +78,12 @@ def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
     return render(request, "CMSApp/detail.html", {"report":report})
 
-from apis.Facade_API import FacadeAPI
-f = FacadeAPI()
 
 @login_required
 def archive(request):
     all_reports = Report.objects.all()
     return render(request, "CMSApp/archive.html", {'all_reports': all_reports})
 
-
-def somethingnew(request):
-    return JsonResponse({'foo': 'bar'})
 
 def get_cd_shelter():
     url = 'https://cd-shelter-data.herokuapp.com/'
@@ -80,7 +93,7 @@ def get_cd_shelter():
     return json_dict
 
 def get_haze_data():
-    haze = f.getHaze()
+    haze = 'https://haze-data.herokuapp.com'
     haze_template = {}
     for key, value in haze["location"].items():
         haze_template[key] = {}

@@ -12,7 +12,7 @@
       <div class="form-group row">
         <label for="NRIC" class="col-sm-2 col-form-label">NRIC</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="NRIC" placeholder="s9522595f" required>
+          <input type="text" class="form-control" id="NRIC" name="nric" placeholder="s9522595f" required>
           <div class="invalid-feedback">
             The input value must be an NRIC
           </div>
@@ -24,7 +24,7 @@
       <div class="form-group row">
         <label for="Name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="Name" placeholder="Tan Jun En" required>
+          <input type="text" class="form-control" id="Name" name="name" placeholder="Tan Jun En" required>
           <div class="invalid-feedback">
             The input value must not contain numbers or special characters
           </div>
@@ -36,7 +36,7 @@
       <div class="form-group row">
         <label for="Mobile" class="col-sm-2 col-form-label">Mobile</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="Mobile" placeholder="+6596759589" required>
+          <input type="text" class="form-control" id="Mobile" name="mobile" placeholder="+6596759589" required>
           <div class="invalid-feedback">
             The input value must be a valid phone number
           </div>
@@ -48,7 +48,7 @@
       <div class="form-group row">
         <label for="Email" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="Email" placeholder="tanjunen@qmail.com" required>
+          <input type="email" class="form-control" id="Email" name="email" placeholder="tanjunen@qmail.com" required>
           <div class="invalid-feedback">
             The input value must be a valid email
           </div>
@@ -115,9 +115,9 @@ function enableSubmit(){
 
 
 function checkValid(id){
-  var nric_regex = /^\w\d+\w$/;
+  var nric_regex = /^\w{1}\d{7}\w{1}$/;
   var name_regex = /^[a-zA-Z ]+$/;
-  var mobile_regex = /^\+?\d{10}$/;
+  var mobile_regex = /^\+{1}\d{10}$/;
   var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var mytag = document.getElementById(id);
   switch(id) {
