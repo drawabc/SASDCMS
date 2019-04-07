@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 from authentication import urls
 from django.core.mail import send_mail
 from django.conf import settings
-
+import urllib.request as ur
+import json
+import pprint
 from .forms import CivilianForm
 
 # Create your views here.
@@ -23,16 +25,15 @@ def home(request):
     except:
         center = -1
     center = json.dumps(center)
-    haze = get_haze_data()
     markers = []
-    dengue = get_dengue_data()
-    dengue = json.dumps({})
-    #print(len(dengue))
+    haze = get_haze_data()
+    dengue = get_dengue_data()["data"]
+    cds = get_cd_shelter()
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
     markers = json.dumps(markers)
 
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue})
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue, 'cds': cds})
 
 
 @login_required
@@ -71,6 +72,13 @@ def archive(request):
 def somethingnew(request):
     return JsonResponse({'foo': 'bar'})
 
+def get_cd_shelter():
+    url = 'https://cd-shelter-data.herokuapp.com/'
+    url_parser = ur.urlopen(ur.Request(url))
+    info = url_parser.read()
+    json_dict = json.loads(info.decode('utf-8'))
+    return json_dict
+
 def get_haze_data():
     haze = f.getHaze()
     haze_template = {}
@@ -83,15 +91,13 @@ def get_haze_data():
         haze_template[key]["pm25"] = value
     return haze_template
 
-import urllib.request as ur
-import json
-import pprint
 def get_dengue_data():
     url = 'https://api-scheduler.herokuapp.com/'
     url_parser = ur.urlopen(ur.Request(url))
     info = url_parser.read()
     json_dict = json.loads(info.decode('utf-8'))
     return json_dict
+
 
 @login_required()
 def manage_public(request):
@@ -111,81 +117,31 @@ def add_public(request):
     else:
         return render(request, "CMSApp/add_civ.html", {'form': form})
 
-#not sure if this is correct (or if any of the code i wrote here is correct)
-def verify_nric(request):
-    if request.method == "POST":
-        data = get_object_or_404(CivilianData, pk=request.POST["NRIC"])
-        return HttpResponse("ASDAF")
-    else:
-        return render(request, "CMSApp/what to display?.html", {'form':EditCivilianForm()}) # TODO: wait for Jun En's magic
-
-def edit_public(request):
-    if request.method == "POST":
-        # TODO: wait for Jun En's magic
-        form = EditCivilianForm(initial={"nric":request.POST["nric"], "name":request.POST["name"],
-                "mobile":request.POST["mobile"],"email":request.POST["email"],"region":request.POST["region"]})
-        return render(request, "CMSApp/what to display?.html", {'form':form})
-
-def somethingnew(request):
-    return JsonResponse({'foo': 'bar'})
-
-def get_haze_data():
-    haze = f.getHaze()
-    haze_template = {}
-    for key, value in haze["location"].items():
-        haze_template[key] = {}
-        haze_template[key]["location"] = value
-    for key, value in haze["psi"].items():
-        haze_template[key]["psi"] = value
-    for key, value in haze["pm25"].items():
-        haze_template[key]["pm25"] = value
-    return haze_template
-
-import urllib.request as ur
-import json
-import pprint
-def get_dengue_data():
-    url = 'https://api-scheduler.herokuapp.com/'
-    url_parser = ur.urlopen(ur.Request(url))
-    info = url_parser.read()
-    json_dict = json.loads(info.decode('utf-8'))
-    return json_dict
-
-@login_required
-def manage_public(request):
-    civ_list = CivilianData.objects.all()
-    return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
-
 @login_required
 def del_public(request, civ_pk):
-    data = get_object_or_404(CivilianData, pk=civ_pk)
+    civ_data = get_object_or_404(CivilianData, pk=civ_pk)
     if request.method == "POST":
-        data.delete()
+        civ_data.delete()
         return HttpResponseRedirect(reverse('CMSApp:manage'))
     else:
         return render(request, "CMSApp/del_civ.html", {'civ' : data})
 
-# https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
-# this function makes sense if the caller is an "Update" button
-def update_civ_data(request, nric):
-    # possible better alternative: CivilianData._do_update
-    # possible better alternative: civ.update_civ_data()
+# reference: https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
+# possible better alternative: CivilianData._do_update
+# possible better alternative: civ.update_civ_data()
+def update_public(request, civ_pk):
+        civ_data = get_object_or_404(CivilianData, pk = civ_pk)
+        # following code runs if no exception
+        if request.method == "GET":
+            form = CivilianForm(civ_data)
+            return render(request, "CMSApp/add_civ.html", {'form': form})
 
-    try:
-        civ = CivilianData.objects.get(pk = nric)
-        try:
-            civ.nric = CivilianData.objects.get(pk = request.POST.get("nric"))
-            return HttpResponse('nric exists already')
-        except:
-            civ.nric = request.POST.get("nric")
-
-        civ.name = request.POST.get("name")
-        civ.mobile = request.POST.get("mobile")
-        civ.email = request.POST.get("email")
-        civ.region = request.POST.get("region")
-
-        civ.save()
-        return HttpResponse('updated civilian data') # what do i return?
-    except:
-        return HttpResponse('civilian does not exist') # what do i return?
-
+        elif request.method == "POST":
+            form = CivilianForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('CMSApp:manage'))
+            else:
+                return render(request, "CMSApp/add_civ.html", {'form': form})
+        else:
+            return render(request, "CMSApp/add_civ.html", {'form': form})

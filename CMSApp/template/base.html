@@ -104,6 +104,7 @@
                                 <a id = "input" class="nav-item nav-link text-dark " href="{% url 'CMSApp:input' %}">Input</a>
                                 <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
                                 <a id = "archive" class="nav-item nav-link text-dark" href="{% url 'CMSApp:archive' %}">Archive</a>
+                                <a id = "civilian" class="nav-item nav-link text-dark" href="{% url 'CMSApp:manage' %}">Civilian</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}
