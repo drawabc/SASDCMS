@@ -1,26 +1,43 @@
 {% extends "base.html" %}
+
 {% block content %}
-    <div class="container-fluid justify-content-center" align="center">
-    <form method="post"> {% csrf_token %}
+    <div class="card mx-auto" style="width: 45rem;" >
+        <div class="card-header " style="background-color:#fdd4c0">
+            <div class="col" align="center">
+                <h1><b>Input Information</b></h1>
+            </div>
+        </div>
+        <div class="card-body ">
+        <form class="needs-validation" method="post"> {% csrf_token %}
           {{ errors }}
-          <div class="col-md-6 text-dark" align="center" style="border-style:solid; border-color:#000">
-            <div class="p-2"><h1><b>Input Information</b></h1></div>
                 <div class="form-group row" align="right">
                     <label for="name_1" class="col-sm-4 col-form-label">Name</label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" id="name_1" name="name" placeholder="Bobby" required>
+                        <div class="invalid-feedback">
+                          The input value must not contain numbers or special characters
+                        </div>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row" align="right">
                     <label for="mobilenum" class="col-sm-4 col-form-label">Mobile</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="mobilenum" name="mobile" placeholder="88888888" required>
+                        <input type="text" class="form-control" id="mobilenum" name="mobile" placeholder="+6588888888" required>
+                        <div class="invalid-feedback">
+                          The input value must be a valid phone number
+                        </div>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row" align="right">
                     <label for="location" class="col-sm-4 col-form-label">Location</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="location" name="location" placeholder="Hogwarts">
+                        <input type="text" class="form-control" id="location" name="location" placeholder="Hogwarts" required>
                     </div>
                 </div>
                 <div class="form-group row" align="right">
@@ -33,6 +50,12 @@
                     <label for="postalCode" class="col-sm-4 col-form-label">Postal Code</label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" id="postalCode" name="postal" placeholder="639221" required>
+                        <div class="invalid-feedback">
+                          The input value must be a valid postal code
+                        </div>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row" align="right">
@@ -70,18 +93,86 @@
                     </label>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 row-centered">
+            </div>
+            <div class="col-md-12 row-centered">
                 <div class="form-group row">
                     <div class="col" align="center">
-                        <button type="submit" class="btn btn-success ">Submit</button>
+                        <button type="submit" id="submit" class="btn btn-success ">Submit</button>
                     </div>
                   </div>
-                </div>
+            </div>
            <br>
-      </div>
-      
     </form>
-  </div>
+    </div>
+    </div>
+    <!-- Javascript for client-side validation -->
+    <script>
+    // Function that enables submission of form or rejection of form
+checker = true;
+function disableSubmit(){
+  document.getElementById("submit").disabled = true;
+}
 
-{% endblock %}
+function enableSubmit(){
+  document.getElementById("submit").disabled = false;
+}
+
+function checkValid(id){
+  var postal_regex = /^\d{6}$/;
+  var name_regex = /^[a-zA-Z ]+$/;
+  var mobile_regex = /^\+?\d{10}$/;
+  var mytag = document.getElementById(id);
+  switch(id) {
+  case "name_1":
+    var value = name_regex.test(mytag.value);
+    break;
+  case "postalCode":
+    var value = postal_regex.test(mytag.value);
+    break;
+  case "mobilenum":
+    var value = mobile_regex.test(mytag.value);
+    break;
+  default:
+    // code block
+  }
+  var mylist = [];
+  mylist.push(document.getElementById("name_1"));
+  mylist.push(document.getElementById("name_1"));
+  mylist.push(document.getElementById("postalCode"));
+  mylist.push(document.getElementById("mobilenum"));
+  if (value){
+    mytag.classList.remove("is-invalid");
+    mytag.classList.add("is-valid");
+      }
+  else{
+    mytag.classList.add("is-invalid");
+    mytag.classList.remove("is-valid");
+  }
+  for (i=0;i<mylist.length;i++){
+    if (mylist[i].classList.contains("is-invalid")){
+      checker = false;
+      break;
+    }
+    checker = true;
+  }
+  if (checker){
+    enableSubmit();
+  }
+  else{
+    disableSubmit();
+  }
+}
+
+
+// Adding event that checks if input is valid
+document.getElementById("mobilenum").addEventListener("focusout",function(){
+  checkValid("mobilenum");
+});
+document.getElementById("name_1").addEventListener("focusout",function(){
+  checkValid("name_1");
+});
+document.getElementById("postalCode").addEventListener("focusout",function(){
+  checkValid("postalCode");
+});
+</script>
+    {% endblock %}

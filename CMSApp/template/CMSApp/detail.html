@@ -1,44 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-lg">
-            <div class="d-flex flex-column"  align="center" style="border-style:solid; border-color:#000">
-                <div class="p-2 border border-secondary"><h1><b>Report Summary</b></h1></div>
-                <div class="p-2"><h3>{{ report.time }}</h3></div>
-                <div class="p-2"><h5>{{ report.location }}</h5></div>
-                <div class="p-2">Name: {{ report.name }}</div>
-                <div class="p-2">Mobile: {{ report.mobile }}</div>
-                <div class="p-2">Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }}</div>
-                <div class="p-2">
-                  Type:
-                    {% ifequal report.type "FF" %}
-                        <large class="text-danger"> Fire-fighting </large>
-                    {% endifequal %}
-                    {% ifequal report.type "EA" %}
-                        <large class="text-primary"> Emergency Ambulance</large>
-                    {% endifequal %}
-                    {% ifequal report.type "RE" %}
-                        <large class="text-warning"> Rescue & Evacuation </large>
-                    {% endifequal %}
-                    {% ifequal report.type "GL" %}
-                        <large class="text-success"> Gas Leak Control</large>
-                    {% endifequal %}
-                </div>
-                <div class="p-2"><p>
-                    <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        Description
-                    </button>
-                  </p>
-                  <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                        {{ report.description }}
-                    </div>
-                  </div>
-                </div>
-            </div>
+
+<div class="card mx-auto" style="width: 50rem;" >
+    <div class="card-header " style="background-color:#fdd4c0">  
+        <div class="col" align="center">     
+            <h1><b>Report Summary</b></h1>
         </div>
-        <div class="col-2"></div>
     </div>
+
+    <div class="card-body" align="center">
+            <div class="p-2"><h3>{{ report.time }}</h3></div>
+            <div class="p-2"><h5>{{ report.location }}</h5></div>
+            <div class="p-2">Name: {{ report.name }}</div>
+            <div class="p-2">Mobile: {{ report.mobile }}</div>
+            <div class="p-2">Location: {{ report.location }} Unit {{ report.unit_number }}, Singapore {{ report.postal_code }}</div>
+            <div class="p-2">
+              Type:
+                {% ifequal report.type "FF" %}
+                    <large class="text-danger"> Fire-fighting </large>
+                {% endifequal %}
+                {% ifequal report.type "EA" %}
+                    <large class="text-primary"> Emergency Ambulance</large>
+                {% endifequal %}
+                {% ifequal report.type "RE" %}
+                    <large class="text-warning"> Rescue & Evacuation </large>
+                {% endifequal %}
+                {% ifequal report.type "GL" %}
+                    <large class="text-success"> Gas Leak Control</large>
+                {% endifequal %}
+            </div>
+            <div class="p-2"><p>
+                <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Description
+                </button>
+              </p>
+              <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    {{ report.description }}
+                </div>
+              </div>
+            </div>
+  </div>
+</div>
 {% endblock %}

@@ -1,18 +1,222 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-fluid justify-content-center" style="width: 50rem; border-style:solid; border-color:#000" > 
-        <div class="row justify-content-center">
-            <h2 align="center"><b>Create Account</b></h2>
-        </div>
-        <div class="row justify-content-center">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <div class="col" align="center">
-                <button type="submit" class="btn btn-success" >Submit</button>
-                </div>
-            </form>
+  <div class="container-fluid justify-content-center">
+<div class="card mx-auto" style="width: 50rem;" >
+    <div class="card-header " style="background-color:#fdd4c0">
+        <div class="col" align="center">
+            <h1 align="center"><b>Create Account</b></h1>
         </div>
     </div>
+
+    <div class="card-body ">
+      <div class="row">
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                      <div class="form-group row">
+                          <label for="username" class="col-sm-4 col-form-label">Username: </label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="username" required>
+                              <small id="usernameHelpInline" class="text-muted">
+                                Must be between 8-150 characters. User can only select letters and digits only. No whitespace allowed.
+                              </small>
+                              <div class="invalid-feedback">
+                                The input value must follow the details of a proper username
+                              </div>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="email" class="col-sm-4 col-form-label">Email address: </label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="email" required>
+                              <div class="invalid-feedback">
+                                The input value must be a valid email
+                              </div>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="password" class="col-sm-4 col-form-label">Password: </label>
+                          <div class="col-sm-8">
+                              <input type="password" class="form-control" id="password" required>
+                              <small id="passwordHelpInline" class="text-muted">
+                                Password must contain 8 to 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace.
+                              </small>
+                              <div class="invalid-feedback">
+                                The input value must follow the details of a proper password
+                              </div>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="password2" class="col-sm-4 col-form-label">Password confirmation: </label>
+                          <div class="col-sm-8">
+                              <input type="password" class="form-control" id="password2" required>
+                              <small id="password2HelpInline" class="text-muted">
+                                Must be the same as Password.
+                              </small>
+                              <div class="invalid-feedback">
+                                The input value must be the same as password
+                              </div>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="firstname" class="col-sm-4 col-form-label">First Name: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="firstname" required>
+                                <div class="invalid-feedback">
+                                  The input value must only contains letters
+                                </div>
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lastname" class="col-sm-4 col-form-label">Last Name: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="lastname" required>
+                                <div class="invalid-feedback">
+                                  The input value must only contains alphabets
+                                </div>
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-sm-4">Staff Status</div>
+                            <div class="col-sm-8">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="staff">
+                                <label class="form-check-label" for="staff">
+                                  Administrator
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-8">
+                              <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                              </div>
+                            </div>
+              </div>
+              <!-- Javascript for client-side validation -->
+              <script>
+                // Function that enables submission of form or rejection of form
+                checker = true;
+                function disableSubmit(){
+                  document.getElementById("submit").disabled = true;
+                }
+
+                function enableSubmit(){
+                  document.getElementById("submit").disabled = false;
+                }
+
+
+
+                function checkValid(id){
+                  var password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
+                  var username_regex = /^[a-zA-Z1-9]{8,150}$/;
+                  var name_regex = /^\w+$/;
+                  var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                  var mytag = document.getElementById(id);
+                  switch(id) {
+                  case "email":
+                    var value = email_regex.test(mytag.value);
+                    break;
+                  case "username":
+                    var value = username_regex.test(mytag.value);
+                    break;
+                  case "password":
+                    var value = password_regex.test(mytag.value);
+                    break;
+                  case "password2":
+                    var password = document.getElementById("password");
+                    if (password.value != password2.value){
+                      var value = false;
+                    }
+                    else{
+                      var value = true;
+                    }
+                    break;
+                  case "firstname":
+                      var value = name_regex.test(mytag.value);
+                    break;
+                  case "lastname":
+                      var value = name_regex.test(mytag.value);
+                    break;
+                  default:
+                    // code block
+                  }
+                  var mylist = [];
+                  mylist.push(document.getElementById("username"));
+                  mylist.push(document.getElementById("password"));
+                  mylist.push(document.getElementById("password2"));
+                  mylist.push(document.getElementById("firstname"));
+                  mylist.push(document.getElementById("lastname"));
+                  mylist.push(document.getElementById("email"));
+                  if (value){
+                    mytag.classList.remove("is-invalid");
+                    mytag.classList.add("is-valid");
+                      }
+                  else{
+                    mytag.classList.add("is-invalid");
+                    mytag.classList.remove("is-valid");
+                  }
+                  for (i=0;i<mylist.length;i++){
+                    if (mylist[i].classList.contains("is-invalid")){
+                      checker = false;
+                      break;
+                    }
+                    checker = true;
+                  }
+                  if (checker){
+                    enableSubmit();
+                  }
+                  else{
+                    disableSubmit();
+                  }
+                }
+
+
+                // Adding event that checks if input is valid
+                document.getElementById("username").addEventListener("focusout",function(){
+                  checkValid("username");
+                });
+                document.getElementById("email").addEventListener("focusout",function(){
+                  checkValid("email");
+                });
+                document.getElementById("password").addEventListener("focusout",function(){
+                  checkValid("password");
+                });
+                document.getElementById("password2").addEventListener("focusout",function(){
+                  checkValid("password2");
+                });
+                document.getElementById("firstname").addEventListener("focusout",function(){
+                  checkValid("firstname");
+                });
+                document.getElementById("lastname").addEventListener("focusout",function(){
+                    checkValid("lastname");
+                });
+
+              </script>
+            </form>
+        </div>
+  </div>
+</div>
+</div>
 {% endblock %}

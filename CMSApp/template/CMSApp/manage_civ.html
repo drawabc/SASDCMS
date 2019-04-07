@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %} 
-    <div class="container w-50 justify-content-center" style="border-style:solid; border-color:#000">
-        <div class="row">
-            <div class="col" align="center">
-                <h1><b>Manage Civilian Data</b></h1>
-            </div>
+
+<div class="card mx-auto" style="width: 45rem;" >
+    <div class="card-header " style="background-color:#fdd4c0">  
+        <div class="col" align="center">     
+            <h1><b>Manage Civilian Data</b></h1>
         </div>
         <div class="row">
             <div class="col" align="right">
                 <a href="{% url 'CMSApp:add_public' %}" class="btn btn-success">CREATE</a>
             </div>
         </div>
+    </div>
+
+    <div class="card-body ">
         <div style="height:4px">&nbsp;</div>
         <div class="row">
             <div class="col">
@@ -38,5 +41,7 @@
                 </table>
             </div>
         </div>
+        </div>
     </div>
+</div>
 {% endblock %}
