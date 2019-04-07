@@ -5,4 +5,5 @@
 3. Go to venv/Scripts (cd venv/Scripts)
 4. Run activate (activate)
 5. Install dependencies (pip install -r requirements.txt) inside django folder not venv folder
-6. Enjoy!
+6. python manage.py migrate
+7. Runserver with -> python manage.py runserver

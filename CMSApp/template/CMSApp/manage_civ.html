@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %} 
+    <div class="container w-50 justify-content-center" style="border-style:solid; border-color:#000">
+        <div class="row">
+            <div class="col" align="center">
+                <h1><b>Manage Civilian Data</b></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" align="right">
+                <a href="{% url 'CMSApp:add_public' %}" class="btn btn-success">CREATE</a>
+            </div>
+        </div>
+        <div style="height:4px">&nbsp;</div>
+        <div class="row">
+            <div class="col">
+                <table class="table text-dark">
+                    <thead>
+                        <tr>
+                            <th>NRIC</th>
+                            <th>Name</th>
+                            <th>Region</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    {% for civ in civ_list %}
+                        <tr>
+                            <td>{{ civ.nric }}</td>
+                            <td>{{ civ.name }}</td>
+                            <td>{{ civ.region }}</td>
+                            <td>{{ civ.mobile }}</td>
+                            <td>{{ civ.email }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

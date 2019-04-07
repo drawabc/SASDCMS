@@ -1,9 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md">
-            <div id="myMap"></div>
+
+    <div class="row">  
+        <div class="col-1"></div>
+        <div class="col-7">
+            
+            <div class ="row">
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleDengue();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Dengue</font>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleHaze();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Haze</font>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleReport();" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <font size="5">&nbsp;Report</font>
+                    </div>
+                </div>
+            </div>
+            <div class ="row">
+                    <div id="myMap"></div>
+                    <div style="height:2px;">&nbsp;</div>
+                </div>
+            
             <script>
                         var map;
                         var markers = {{ markers|safe }};
@@ -11,15 +47,109 @@
                         if (address!=-1){
                             address = { lat: parseFloat(address["lat"]), lng: parseFloat(address["lng"])};
                         }
+                        var dengue = {{ dengue|safe }};
+                        var haze = {{ haze|safe }};
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
                         var temp;
+                        var dengueCheck = 1;
+                        var hazeCheck = 1;
+                        var reportCheck = 1;
+                        function toggleDengue(){
+                            dengueCheck = dengueCheck + 1;
+                            dengueCheck = dengueCheck % 2;
+                            initMap();
+                        }
+                        function toggleReport(){
+                            reportCheck = reportCheck + 1;
+                            reportCheck = reportCheck % 2;
+                            initMap();
+                        }
+                        function toggleHaze(){
+                            hazeCheck = hazeCheck + 1;
+                            hazeCheck = hazeCheck % 2;
+                            initMap();
+                        }
+                        function showHaze(map){
+                            var image = {
+                                url: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/699966-icon-1-cloud-512.png',
+                                 scaledSize: new google.maps.Size(50, 50), // scaled size
+                                // The origin for this image is (0, 0).
+                                origin: new google.maps.Point(0, 0),
+                                // The anchor for this image is the base of the flagpole at (0, 32).
+                                anchor: new google.maps.Point(25, 50)
+                            };
+                            for (haz in haze){
+                                temp = haze[haz]["location"];
+                                temp = { lat: parseFloat(temp["latitude"]), lng: parseFloat(temp["longitude"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: haz,
+                                    icon: image
+                                });
+
+                                var infowindow = new google.maps.InfoWindow();
+                                var content = '<div><strong>' + haz + '</strong><br>' +
+                                        'PSI: ' + haze[haz]["psi"] + '<br>' +
+                                        'PM25: '+ haze[haz]["pm25"] + '</div>'
+
+
+                                google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                                    return function() {
+                                        infowindow.setContent(content);
+                                        infowindow.open(map, this);
+                                    };
+                               })(marker,content,infowindow));
+                            }
+                        }
+                        function showReport(map){
+                            var image;
+                            var urlx;
+                            for(mark in markers){
+                                // green
+                                if (markers[mark]["type"]=="GL"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+                                }
+                                else if (markers[mark]["type"]=="RE"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+                                }
+                                else if (markers[mark]["type"]=="EA"){
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                                }
+                                else{
+                                    urlx = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+                                }
+                                temp = markers[mark]["latlng"];
+                                if (temp["lat"] == "NA") continue;
+                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
+                                var marker = new google.maps.Marker({
+                                    position: temp,
+                                    map: map,
+                                    title: markers[mark]["name"],
+                                    icon: urlx
+                                });
+                            }
+                        }
+                        function showDengue(map) {
+                            for(d in dengue){
+                                outer = dengue[d];
+                                map.data.add({geometry: new google.maps.Data.Polygon([outer])})
+                            }
+                            map.data.setStyle({
+                                    fillColor: 'red',
+                                    strokeWeight: 10,
+                                    strokeColor: 'red'
+                            });
+                        }
+
                         function initMap() {
                             var geocoder;
                             map = new google.maps.Map(document.getElementById('myMap'), {
                                 center: {lat: 1.3521 , lng:  103.8198},
                                 zoom: 11
                             });
+
                             var infowindow = new google.maps.InfoWindow();
                             function CenterControl(controlDiv, map) {
                                 // Set CSS for the control border.
@@ -52,20 +182,15 @@
                                 });
 
                              }
-                            for(mark in markers){
-                                console.log(mark);
-                                temp = markers[mark]["latlng"];
-                                console.log(temp);
-                                if (temp["lat"] == "NA") continue;
-                                temp = { lat: parseFloat(temp["lat"]), lng: parseFloat(temp["lng"])};
-                                console.log(temp);
-                                var marker = new google.maps.Marker({
-                                    position: temp,
-                                    map: map,
-                                    title: markers[mark]["name"]
-                                });
+                            if(dengueCheck==1){
+                                showDengue(map);
                             }
-
+                            if(reportCheck==1){
+                                showReport(map);
+                            }
+                            if(hazeCheck==1){
+                                showHaze(map);
+                            }
                             //part of center map button
                             var centerControlDiv = document.createElement('div');
                             var centerControl = new CenterControl(centerControlDiv, map);
@@ -82,28 +207,39 @@
                     </script>
             <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyARXkp10wZAwMj0cFN21Sq09OgxPLOqWqI&callback=initMap'></script>
         </div>
+
+        
         <div class="col-sm">
-            <ul class="list group">
+            <ul class="nav nav-pills nav-stacked anyClass" style="width: 80%;">
                 {% for report in report_list %}
-                <a href="{% url 'home' %}?postal={{ report.postal_code }}" class="list-group-item list-group-item-action" style="width: 60%;">
+                <li class="nav-item" style="width: 100%;">
+                <a href="{% url 'CMSApp:home' %}?postal={{ report.postal_code }}" class="bg-dark text-white list-group-item list-group-item-action" style="width: 95%;">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ report.name }}</h5>
                         <small>{{ report.time.date }}</small>
                     </div>
-                    <p class="mb-1">{{ report.mobile }} @ {{ report.postal_code }}</p>
-                    {% ifequal report.type "FF" %}
-                        <small> Fire-fighting </small>
-                    {% endifequal %}
-                    {% ifequal report.type "EA" %}
-                        <small> Emergency Ambulance </small>
-                    {% endifequal %}
-                    {% ifequal report.type "RE" %}
-                        <small> Rescue & Evacuation </small>
-                    {% endifequal %}
-                    {% ifequal report.type "GL" %}
-                        <small> Gas Leak Control </small>
-                    {% endifequal %}
+                    <div class="d-flex w-100 justify-content-between">
+                            <p class="mb-1">Phone: {{ report.mobile }}</p>
+                                {% ifequal report.type "FF" %}
+                                    <small class="text-danger"> <em>Fire-fighting</em> </small>
+                                {% endifequal %}
+                                {% ifequal report.type "EA" %}
+                                    <small class="text-primary"> <em>Emergency Ambulance</em> </small>
+                                {% endifequal %}
+                                {% ifequal report.type "RE" %}
+                                    <small class="text-warning"> <em>Rescue & Evacuation</em> </small>
+                                {% endifequal %}
+                                {% ifequal report.type "GL" %}
+                                    <small class="text-success"> <em>Gas Leak Control</em> </small>
+                                {% endifequal %}
+                        </div>
+                    <p class="mb-1">Postal Code: {{ report.postal_code }} </p>
                 </a>
+                <a href="{% url 'CMSApp:detail'  report.pk %}" class="btn btn-dark btn-sm bg-dark list-group-item" style="width: 95%;">
+                    <div style="font-size:14;"><u>Details</u></div>
+                </a>
+                <div style="height:5px;">&nbsp;</div>
+            </li>
                 {% endfor %}
             </ul>
         </div>

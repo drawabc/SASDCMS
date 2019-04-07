@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid justify-content-center" style="width: 50rem; border-style:solid; border-color:#000" > 
+        <div class="row justify-content-center">
+            <h2 align="center"><b>Create Account</b></h2>
+        </div>
+        <div class="row justify-content-center">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="col" align="center">
+                <button type="submit" class="btn btn-success" >Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
