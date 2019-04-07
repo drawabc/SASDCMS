@@ -11,7 +11,7 @@ from authentication import urls
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .forms import AddCivilianForm, EditCivilianForm
+from .forms import CivilianForm
 
 # Create your views here.
 
@@ -100,21 +100,16 @@ def manage_public(request):
 
 #feel free to refactor code below
 def add_public(request):
+    form = CivilianForm()
     if request.method == "POST":
-        nric = request.POST["nric"]
-        name = request.POST["name"]
-        mobile = request.POST["mobile"]
-        email = request.POST["email"]
-        region = request.POST["region"]
-
-        new_civ_data = CivilianData(nric=nric,name=name,mobile=mobile,email=email,region=region)
-        try:
-            new_civ_data.save()
-            return HttpResponseRedirect(reverse('CMSApp:home'))
-        except:
-            return render(request, "CMSApp/add_civ.html", {'form':AddCivilianForm(), 'error' : 'Error! NRIC is already in use.'})
+        form = CivilianForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('CMSApp:manage'))
+        else:
+            return render(request, "CMSApp/add_civ.html", {'form': form})
     else:
-        return render(request, "CMSApp/add_civ.html", {'form':AddCivilianForm()})
+        return render(request, "CMSApp/add_civ.html", {'form': form})
 
 #not sure if this is correct (or if any of the code i wrote here is correct)
 def verify_nric(request):
