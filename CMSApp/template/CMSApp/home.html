@@ -37,7 +37,7 @@
                 <div class="col-3">
                     <div class="row">
                         <label class="switch">
-                            <input type="checkbox" onclick="toggleShelter();" checked>
+                            <input type="checkbox" onclick="toggleShelter();">
                             <span class="slider round"></span>
                         </label>
                         <font size="5">&nbsp;CD Shelter</font>
@@ -58,7 +58,6 @@
                         }
                         var dengue = {{ dengue|safe }};
                         var cds = {{ cds|safe }};
-                        console.log(cds);
                         var haze = {{ haze|safe }};
                         var i;
                         var initial = {lat: 1.3521 , lng:  103.8198};
@@ -66,7 +65,7 @@
                         var dengueCheck = 1;
                         var hazeCheck = 1;
                         var reportCheck = 1;
-                        var shelterCheck = 1;
+                        var shelterCheck = 0;
                         
                         function toggleDengue(){
                             dengueCheck = dengueCheck + 1;
@@ -122,7 +121,12 @@
                             }
                         }
                         function showShelter(map){
-
+                             var image = {
+                                url: 'https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png',
+                                scaledSize: new google.maps.Size(50, 40), // scaled size
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(25, 50)
+                            };
                             var locations = [];
                             for(cd in cds){
                                 temp = cds[cd];
@@ -132,6 +136,7 @@
                             var markers = locations.map(function(location) {
                                   return new google.maps.Marker({
                                     position: location,
+                                    icon: image
                                   });
                                 });
 

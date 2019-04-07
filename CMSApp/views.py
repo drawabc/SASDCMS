@@ -8,14 +8,14 @@ from django.urls import reverse
 
 from CMSApp.models import Report, CivilianData
 from apis.latitudelongitude import get_latlng
-#from apis.sms_django import PointLocater, SMSAPI
+from apis.sms_django import SMSAPI
 from .forms import CivilianForm
 
 
 # Create your views here.
 
 def home(request):
-    report_list = Report.objects.all().filter().order_by("time")[::-1]
+    report_list = Report.objects.all().filter().order_by("time")[:5:-1]
     try:
         postal = request.GET["postal"]
         center = get_latlng(postal)
@@ -23,7 +23,6 @@ def home(request):
         center = -1
     center = json.dumps(center)
     markers = []
-    # THIS IS API DATA!!!!!!!!!!!!!!!!!!!!!!!!
     data = get_server_data()
     haze = get_haze_data(data)
     print(haze)
@@ -50,25 +49,23 @@ def input(request):
             desc = request.POST["description"]
             unit = request.POST["unit"]
             django_dict = {}
-            django_dict["type"] = str(type1)
+            django_dict["Type"] = str(type1)
             django_dict["mobile"] = str(mobile)
-            django_dict["location"] = str(location)
+            django_dict["Location"] = str(location)
             django_dict["postal"] = str(postal)
-            django_dict["description"] = str(desc)
+            django_dict["Description"] = str(desc)
             django_dict["name"] = str(name)
 
             new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, description=desc, unit_number=unit)
             new_report.save()
             #Sending SMS
             sender = "+12052939421"
-            receiverAgency = ['+6584012250']
-            # sms = SMSAPI()
-            # #Hard coded this for now because sms uses twilio server which is severely limited to a number of phones
-            # receiver_region = {"WEST": "+6591746880", "CENTRAL": "+6586502577", "EAST": "+6598835026",
-            #                    "NORTH": "+6582965839", "NORTH-EAST": "+6591746880", }
-            # region = PointLocater().getRegionName(get_latlng(django_dict["postal"]))
-            # sms.sendFormattedSMS(django_dict, sender,receiverAgency)
-            # sms.sendFormattedSMS(django_dict, sender, receiver_region[region])
+            receiverAgency = ['+6596579895']
+            sms = SMSAPI()
+            #Hard coded this for now because sms uses twilio server which is severely limited to a number of phones
+            receiver_region = ["+6591746880", "+6586502577", "+6598835026", "+6582965839", "+6591746880"]
+            print(sms.sendFormattedSMS(django_dict, sender,receiverAgency))
+            print(sms.sendFormattedSMS(django_dict, sender, receiver_region))
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
 
@@ -90,7 +87,7 @@ def get_server_data():
     url_parser = ur.urlopen(ur.Request(url))
     info = url_parser.read()
     json_dict = json.loads(info.decode('utf-8'))
-    return None
+    return json_dict
 
 def get_cd_shelter(dict):
     if dict=={}:

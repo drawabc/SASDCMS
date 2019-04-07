@@ -1,51 +1,7 @@
 from twilio.rest import Client
 import json
-from shapely.geometry import shape, Point
 import requests
-import googlemaps
 
-class PointLocater(object):
-    def __init__(self):
-        with open('map.geojson') as f:
-            self.map = json.load(f)
-    def getRegionName(self, latlng):
-        point = Point(latlng["lng"],latlng["lat"])
-        for feature in self.map['features']:
-            polygon = shape(feature['geometry'])
-            if polygon.contains(point):
-                return(feature['properties']['Region Name'])
-        return None
-
-def get_latlng(postal_code):
-    """Return a dictionary in the format {"lat" : latitude_string, "lng" : longitude_string}"""
-
-    latitude_longitude = {"lat" : "NA", "lng" : "NA"}
-    
-    if postal_code == -1:
-        return latitude_longitude
-    # get lat lng using onemap
-    latitude_longitude = get_latlng_onemap(postal_code)
-    return latitude_longitude
-
-
-def get_latlng_onemap(postal_code):
-    
-    latitude_longitude = {"lat" : "NA", "lng" : "NA"} #repetition of code
-    
-    # refer to OneMap API documentation for format
-    response = requests.get("https://developers.onemap.sg/commonapi/search?searchVal=" +
-                               postal_code + "&returnGeom=Y&getAddrDetails=Y")
-        
-    if response.status_code == 200:
-        
-        response_data = response.json()
-
-        if response_data["found"] != 0:
-            latitude_longitude["lat"] = float(response_data["results"][0]["LATITUDE"])                
-            latitude_longitude["lng"] = float(response_data["results"][0]["LONGITUDE"])
-
-    return latitude_longitude
-  
 class SMSAPI:
     def __init__(self):
         self.account_sid ='ACa81b7b9e04c7af554434a5709cbcb7d4'
@@ -74,10 +30,10 @@ class SMSAPI:
             message = subject + "\n" + description + "\n" +  location + \
                       "\n" + "Requestor Name: " + django_dict["name"] + "\n"\
                       + "Requestor Mobile: " + django_dict["mobile"] + \
-                      + "\n" + "Sent from CMS"
+                      "\n" + "Sent from CMS"
             self.sendSMS(message, sender, receivers)
             return True
-        except:
+        except Exception as error:
             return False
 
     def sendSMSToRegion(self, django_dict, sender, receivers_region):
@@ -97,7 +53,6 @@ if __name__ == "__main__":
     django_dict = {'Type': "Gas Leak", "Description":"This is a description",
 "Location":"Pasir Ris", "name": "Tan Jun En", "mobile": "+6596579895","postal":"650394"}
     #Imagine receivers phone number in a particular region e.g. North
-    receiver_region = {"WEST":"+6591746880","CENTRAL":"+6586502577","EAST":"+6598835026","NORTH":"+6582965839","NORTH-EAST":"+6591746880",}
-    region = PointLocater().getRegionName(get_latlng(django_dict["postal"]))
+    receiver_region = ["+6591746880","+6586502577","+6598835026","+6582965839","+6591746880","+6596579895"]
     print(SMSAPI().sendFormattedSMS(django_dict, sender, receiverAgency))
-    print(SMSAPI().sendSMSToRegion(django_dict, sender, receiver_region[region]))
+    print(SMSAPI().sendSMSToRegion(django_dict, sender, receiver_region))
