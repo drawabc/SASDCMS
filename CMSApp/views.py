@@ -113,12 +113,12 @@ def get_dengue_data():
     return json_dict
 
 
-@login_required()
+@login_required
 def manage_public(request):
     civ_list = CivilianData.objects.all()
     return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
 
-#feel free to refactor code below
+@login_required
 def add_public(request):
     form = CivilianForm()
     if request.method == "POST":
@@ -143,17 +143,20 @@ def del_public(request, civ_pk):
 # reference: https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
 # possible better alternative: CivilianData._do_update
 # possible better alternative: civ.update_civ_data()
+@login_required
 def update_public(request, civ_pk):
     civ_data = get_object_or_404(CivilianData, pk=civ_pk)
     # following code runs if no exception
     if request.method == "POST":
-        form = CivilianForm(request.POST)
+        form = CivilianForm(request.POST, instance=civ_data)
+        print(request.POST["name"])
+        print(form)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('CMSApp:manage'))
         else:
-            return render(request, "CMSApp/add_civ.html", {'form': form})
+            return render(request, "CMSApp/update_civ.html", {'civ': civ_data})
     else:
         # request.method == "GET"
         form = CivilianForm(instance=civ_data)
-        return render(request, "CMSApp/add_civ.html", {'form': form})
+        return render(request, "CMSApp/update_civ.html", {'civ': civ_data})
