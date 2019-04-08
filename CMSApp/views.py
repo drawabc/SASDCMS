@@ -1,38 +1,38 @@
+import json
+import urllib.request as ur
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.urls import reverse
+
 from CMSApp.models import Report, CivilianData
 from apis.latitudelongitude import get_latlng
-from django.urls import reverse
-from django.core import serializers
-import json
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from authentication import urls
-from django.core.mail import send_mail
-from django.conf import settings
+from apis.sms_django import SMSAPI
+from .forms import CivilianForm
 
-from .forms import AddCivilianForm, EditCivilianForm
 
 # Create your views here.
 
 def home(request):
-    report_list = Report.objects.all().filter().order_by("time")
+    report_list = Report.objects.all().filter().order_by("time")[:5:-1]
     try:
         postal = request.GET["postal"]
         center = get_latlng(postal)
     except:
         center = -1
     center = json.dumps(center)
-    haze = get_haze_data()
     markers = []
-    dengue = get_dengue_data()
-    dengue = json.dumps({})
-    #print(len(dengue))
+    data = get_server_data()
+    haze = get_haze_data(data)
+    print(haze)
+    dengue = get_dengue_data(data)
+    cds = get_cd_shelter(data)
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
     markers = json.dumps(markers)
 
-    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue})
+    return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue, 'cds': cds})
 
 
 @login_required
@@ -44,12 +44,28 @@ def input(request):
             name = request.POST["name"]
             mobile = request.POST["mobile"]
             location = request.POST["location"]
-            type = request.POST["type"]
+            type1 = request.POST["type"]
             postal = request.POST["postal"]
             desc = request.POST["description"]
             unit = request.POST["unit"]
-            new_report = Report(name=name, mobile=mobile, location=location, type=type, postal_code=postal, description=desc, unit_number=unit)
+            django_dict = {}
+            django_dict["Type"] = str(type1)
+            django_dict["mobile"] = str(mobile)
+            django_dict["Location"] = str(location)
+            django_dict["postal"] = str(postal)
+            django_dict["Description"] = str(desc)
+            django_dict["name"] = str(name)
+
+            new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, description=desc, unit_number=unit)
             new_report.save()
+            #Sending SMS
+            sender = "+12052939421"
+            receiverAgency = ['+6596579895']
+            sms = SMSAPI()
+            #Hard coded this for now because sms uses twilio server which is severely limited to a number of phones
+            receiver_region = ["+6591746880", "+6586502577", "+6598835026", "+6582965839", "+6591746880"]
+            print(sms.sendFormattedSMS(django_dict, sender,receiverAgency))
+            print(sms.sendFormattedSMS(django_dict, sender, receiver_region))
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
 
@@ -59,8 +75,6 @@ def detail(request, report_pk):
     report = get_object_or_404(Report, pk=report_pk)
     return render(request, "CMSApp/detail.html", {"report":report})
 
-from apis.Facade_API import FacadeAPI
-f = FacadeAPI()
 
 @login_required
 def archive(request):
@@ -68,129 +82,84 @@ def archive(request):
     return render(request, "CMSApp/archive.html", {'all_reports': all_reports})
 
 
-def somethingnew(request):
-    return JsonResponse({'foo': 'bar'})
-
-def get_haze_data():
-    haze = f.getHaze()
-    haze_template = {}
-    for key, value in haze["location"].items():
-        haze_template[key] = {}
-        haze_template[key]["location"] = value
-    for key, value in haze["psi"].items():
-        haze_template[key]["psi"] = value
-    for key, value in haze["pm25"].items():
-        haze_template[key]["pm25"] = value
-    return haze_template
-
-import urllib.request as ur
-import json
-import pprint
-def get_dengue_data():
+def get_server_data():
     url = 'https://api-scheduler.herokuapp.com/'
     url_parser = ur.urlopen(ur.Request(url))
     info = url_parser.read()
     json_dict = json.loads(info.decode('utf-8'))
     return json_dict
 
-@login_required()
-def manage_public(request):
-    civ_list = CivilianData.objects.all()
-    return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
-
-#feel free to refactor code below
-def add_public(request):
-    if request.method == "POST":
-        nric = request.POST["nric"]
-        name = request.POST["name"]
-        mobile = request.POST["mobile"]
-        email = request.POST["email"]
-        region = request.POST["region"]
-
-        new_civ_data = CivilianData(nric=nric,name=name,mobile=mobile,email=email,region=region)
-        try:
-            new_civ_data.save()
-            return HttpResponseRedirect(reverse('CMSApp:home'))
-        except:
-            return render(request, "CMSApp/add_civ.html", {'form':AddCivilianForm(), 'error' : 'Error! NRIC is already in use.'})
+def get_cd_shelter(dict):
+    if dict=={}:
+        return {}
     else:
-        return render(request, "CMSApp/add_civ.html", {'form':AddCivilianForm()})
+        return dict["data_cdshelter"]
 
-#not sure if this is correct (or if any of the code i wrote here is correct)
-def verify_nric(request):
-    if request.method == "POST":
-        data = get_object_or_404(CivilianData, pk=request.POST["NRIC"])
-        return HttpResponse("ASDAF")
+def get_haze_data(dict):
+    if dict=={}:
+        return {"location":{}, "psi":{}, "pm25":{}}
     else:
-        return render(request, "CMSApp/what to display?.html", {'form':EditCivilianForm()}) # TODO: wait for Jun En's magic
+        haze = dict["data_haze"]
+        haze_template = {}
+        for key, value in haze["location"].items():
+            haze_template[key] = {}
+            haze_template[key]["location"] = value
+        for key, value in haze["psi"].items():
+            haze_template[key]["psi"] = value
+        for key, value in haze["pm25"].items():
+            haze_template[key]["pm25"] = value
+        return haze_template
 
-def edit_public(request):
-    if request.method == "POST":
-        # TODO: wait for Jun En's magic
-        form = EditCivilianForm(initial={"nric":request.POST["nric"], "name":request.POST["name"],
-                "mobile":request.POST["mobile"],"email":request.POST["email"],"region":request.POST["region"]})
-        return render(request, "CMSApp/what to display?.html", {'form':form})
-
-def somethingnew(request):
-    return JsonResponse({'foo': 'bar'})
-
-def get_haze_data():
-    haze = f.getHaze()
-    haze_template = {}
-    for key, value in haze["location"].items():
-        haze_template[key] = {}
-        haze_template[key]["location"] = value
-    for key, value in haze["psi"].items():
-        haze_template[key]["psi"] = value
-    for key, value in haze["pm25"].items():
-        haze_template[key]["pm25"] = value
-    return haze_template
-
-import urllib.request as ur
-import json
-import pprint
-def get_dengue_data():
-    url = 'https://api-scheduler.herokuapp.com/'
-    url_parser = ur.urlopen(ur.Request(url))
-    info = url_parser.read()
-    json_dict = json.loads(info.decode('utf-8'))
-    return json_dict
+def get_dengue_data(dict):
+    if dict=={}:
+        return {}
+    else:
+        return dict["data_dengue"]
 
 @login_required
 def manage_public(request):
     civ_list = CivilianData.objects.all()
     return render(request, "CMSApp/manage_civ.html", {'civ_list' : civ_list})
+
+@login_required
+def add_public(request):
+    form = CivilianForm()
+    if request.method == "POST":
+        form = CivilianForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('CMSApp:manage'))
+        else:
+            return render(request, "CMSApp/add_civ.html", {'form': form})
+    else:
+        return render(request, "CMSApp/add_civ.html", {'form': form})
 
 @login_required
 def del_public(request, civ_pk):
-    data = get_object_or_404(CivilianData, pk=civ_pk)
+    civ_data = get_object_or_404(CivilianData, pk=civ_pk)
     if request.method == "POST":
-        data.delete()
+        civ_data.delete()
         return HttpResponseRedirect(reverse('CMSApp:manage'))
     else:
-        return render(request, "CMSApp/del_civ.html", {'civ' : data})
+        return render(request, "CMSApp/del_civ.html", {'civ' : civ_data})
 
-# https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
-# this function makes sense if the caller is an "Update" button
-def update_civ_data(request, nric):
-    # possible better alternative: CivilianData._do_update
-    # possible better alternative: civ.update_civ_data()
-
-    try:
-        civ = CivilianData.objects.get(pk = nric)
-        try:
-            civ.nric = CivilianData.objects.get(pk = request.POST.get("nric"))
-            return HttpResponse('nric exists already')
-        except:
-            civ.nric = request.POST.get("nric")
-
-        civ.name = request.POST.get("name")
-        civ.mobile = request.POST.get("mobile")
-        civ.email = request.POST.get("email")
-        civ.region = request.POST.get("region")
-
-        civ.save()
-        return HttpResponse('updated civilian data') # what do i return?
-    except:
-        return HttpResponse('civilian does not exist') # what do i return?
-
+# reference: https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
+# possible better alternative: CivilianData._do_update
+# possible better alternative: civ.update_civ_data()
+@login_required
+def update_public(request, civ_pk):
+    civ_data = get_object_or_404(CivilianData, pk=civ_pk)
+    # following code runs if no exception
+    if request.method == "POST":
+        form = CivilianForm(request.POST, instance=civ_data)
+        print(request.POST["name"])
+        print(form)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('CMSApp:manage'))
+        else:
+            return render(request, "CMSApp/update_civ.html", {'civ': civ_data})
+    else:
+        # request.method == "GET"
+        form = CivilianForm(instance=civ_data)
+        return render(request, "CMSApp/update_civ.html", {'civ': civ_data})

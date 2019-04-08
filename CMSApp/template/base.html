@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Bootstrap CSS -->
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -102,8 +104,9 @@
                             <div class="nav nav-tabs">
                                 <a id = "home" class="nav-item nav-link text-dark" href="{% url 'CMSApp:home' %}">Home</a>
                                 <a id = "input" class="nav-item nav-link text-dark " href="{% url 'CMSApp:input' %}">Input</a>
-                                <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
                                 <a id = "archive" class="nav-item nav-link text-dark" href="{% url 'CMSApp:archive' %}">Archive</a>
+                                <a id = "civilian" class="nav-item nav-link text-dark" href="{% url 'CMSApp:manage' %}">Civilian</a>
+                                <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}
@@ -127,6 +130,18 @@
             <div style="height:5%"></div>  
             {% block content %}
             {% endblock content %}
+            <div style="height:1%"></div>
+            <div class="row" style="background-color:#fdd4c0;height:7%;font-size:32px">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <a href="https://web.telegram.org/#/im?p=g391286369">
+                       <i class="fa fa-telegram" aria-hidden="true"></i>
+                    </a>
+                    <a href="#">
+                       <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </body>
 </html>
