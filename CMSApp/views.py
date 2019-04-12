@@ -9,7 +9,8 @@ from django.urls import reverse
 from CMSApp.models import Report, CivilianData
 from apis.latitudelongitude import get_latlng
 from apis.sms_django import SMSAPI
-from .forms import CivilianForm
+from apis.email_django import EmailSend
+from .forms import CivilianForm 
 
 
 # Create your views here.
@@ -55,17 +56,14 @@ def input(request):
             django_dict["postal"] = str(postal)
             django_dict["Description"] = str(desc)
             django_dict["name"] = str(name)
-
+            #Saving to database in Django
             new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, description=desc, unit_number=unit)
             new_report.save()
-            #Sending SMS
+            #Sending SMS to Agency
             sender = "+12052939421"
             receiverAgency = ['+6596579895']
             sms = SMSAPI()
-            #Hard coded this for now because sms uses twilio server which is severely limited to a number of phones
-            receiver_region = ["+6591746880", "+6586502577", "+6598835026", "+6582965839", "+6591746880"]
             print(sms.sendFormattedSMS(django_dict, sender,receiverAgency))
-            print(sms.sendFormattedSMS(django_dict, sender, receiver_region))
         except:
             return render(request, "CMSApp/input.html", {'error' : 'Error! Please Input Again'})
 
@@ -163,3 +161,23 @@ def update_public(request, civ_pk):
         # request.method == "GET"
         form = CivilianForm(instance=civ_data)
         return render(request, "CMSApp/update_civ.html", {'civ': civ_data})
+
+@login_required
+def mass_message(request):
+    if request.method == "POST":
+        #Send a mass Email out
+        subject = request.POST["subject"]
+        message = request.POST["messge"]
+        region = request.POST["region"]
+        region_civ_data = CivilianData.objects.filter(region__exact=region)
+        server = EmailSend.startServer()
+        mail = EmailSend()
+        for people in region_civ_data:
+            #send email to people.email using subject and message
+            try:
+                mail.send_email(server, people.email,message,subject)
+            except:
+                continue
+        return HttpResponseRedirect(reverse('CMSApp:home'))
+    else:
+        return render(request, "CMSApp/mass_message.html", {})
