@@ -178,6 +178,7 @@ def mass_message(request):
                 mail.send_email(server, [people.email],message,subject)
             except:
                 continue
+        EmailSend.quitServer(server)
         return HttpResponseRedirect(reverse('CMSApp:home'))
     else:
         return render(request, "CMSApp/mass_message.html", {})
