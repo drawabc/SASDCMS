@@ -175,7 +175,7 @@ def mass_message(request):
         for people in region_civ_data:
             #send email to people.email using subject and message
             try:
-                mail.send_email(server, people.email,message,subject)
+                mail.send_email(server, [people.email],message,subject)
             except:
                 continue
         return HttpResponseRedirect(reverse('CMSApp:home'))
