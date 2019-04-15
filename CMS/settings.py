@@ -29,7 +29,7 @@ if PROD:
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['3.1.194.234']
+ALLOWED_HOSTS = ['3.1.194.234', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -127,7 +127,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
-
-
-CSRF_COOKIE_SECURE = True
