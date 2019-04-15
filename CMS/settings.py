@@ -29,7 +29,7 @@ if PROD:
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.1.194.234']
 
 
 # Application definition
