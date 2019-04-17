@@ -16,7 +16,7 @@ tz = pytz.timezone('Asia/Singapore')
 # Create your views here.
 def home(request):
     report_list = Report.objects.all().filter().order_by("time")[::-1]
-    report_list = report_list[0:4]
+    report_list = report_list[0:min(len(report_list), 20)]
     try:
         postal = request.GET["postal"]
         center = get_latlng(postal)
@@ -24,10 +24,13 @@ def home(request):
         center = -1
     center = json.dumps(center)
     markers = []
-    data = {}#get_server_data()
-    haze = {} #get_haze_data(data)
-    dengue = {} #get_dengue_data(data)
-    cds = {} #get_cd_shelter(data)
+    try:
+        data = get_server_data()
+    except:
+        data = {}
+    haze = get_haze_data(data)
+    dengue = get_dengue_data(data)
+    cds = get_cd_shelter(data)
     for report in report_list:
         markers.append({"name" : report.name, "latlng" : {"lat": report.lat, "lng": report.lng}, "type": report.type})
     markers = json.dumps(markers)
