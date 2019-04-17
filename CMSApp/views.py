@@ -1,4 +1,4 @@
-import json
+import json, pytz, datetime
 import urllib.request as ur
 
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,7 @@ from apis.latitudelongitude import get_latlng
 from apis.sms_django import SMSAPI
 from .forms import CivilianForm
 
-
+tz = pytz.timezone('Asia/Singapore')
 # Create your views here.
 
 def home(request):
@@ -143,6 +143,14 @@ def del_public(request, civ_pk):
     else:
         return render(request, "CMSApp/del_civ.html", {'civ' : civ_data})
 
+@login_required
+def resolve(request, report_pk):
+    report = get_object_or_404(Report, pk=report_pk)
+    report.resolved = True
+    report.resolve_time = datetime.datetime.now(tz=tz)
+    report.save()
+    return HttpResponseRedirect(reverse('CMSApp:detail', kwargs={'report_pk':report_pk}))
+
 # reference: https://stackoverflow.com/questions/311188/how-do-i-edit-and-delete-data-in-django
 # possible better alternative: CivilianData._do_update
 # possible better alternative: civ.update_civ_data()
@@ -152,8 +160,8 @@ def update_public(request, civ_pk):
     # following code runs if no exception
     if request.method == "POST":
         form = CivilianForm(request.POST, instance=civ_data)
-        print(request.POST["name"])
-        print(form)
+        #print(request.POST["name"])
+        #print(form)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('CMSApp:manage'))

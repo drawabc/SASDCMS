@@ -42,10 +42,13 @@
               </div>
             </div>
             <div class="p-2">
-                <button class="btn btn-primary" onclick="alertResolve()" type="button">
-                    Resolve
-                </button>   
-                <p id="demo"></p>
+                {% if report.resolved %}
+                    Resolved at {{ report.resolve_time }}
+                {% else %}
+                    <button class="btn btn-primary" onclick="alertResolve()" type="button">
+                        Resolve
+                    </button>
+                {% endif %}
             </div>
     </div>
 </div>
@@ -53,13 +56,12 @@
 <script>
     function alertResolve() {
         var txt;
-        var r = confirm("Press a button!\nEither OK or Cancel.\nThe button you pressed will be displayed in the result window.");
+        var r = confirm("Please confirm to resolve.\n");
         if (r == true) {
-            txt = "You pressed OK!";
+            document.location.href = "{% url 'CMSApp:resolve' report.pk %}";
         } else {
             txt = "You pressed Cancel!";
         }
-        document.getElementById("demo").innerHTML = txt;
     }
 </script>
 {% endblock %}
