@@ -26,7 +26,8 @@ def get_latlng(postal_code):
             latitude_longitude["lng"] = str(geocode_result["lng"])
     # if google geocode fails, I don't know what to do anymore
     """
-    print(latitude_longitude, postal_code) # helpful for tracing
+    #print(type(latitude_longitude["lat"]))
+    #print(latitude_longitude, postal_code) # helpful for tracing
     return latitude_longitude
 
 

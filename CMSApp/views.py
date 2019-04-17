@@ -24,13 +24,12 @@ def home(request):
         center = -1
     center = json.dumps(center)
     markers = []
-    data = get_server_data()
-    haze = get_haze_data(data)
-    print(haze)
-    dengue = get_dengue_data(data)
-    cds = get_cd_shelter(data)
+    data = {}#get_server_data()
+    haze = {} #get_haze_data(data)
+    dengue = {} #get_dengue_data(data)
+    cds = {} #get_cd_shelter(data)
     for report in report_list:
-        markers.append({"name" : report.name, "latlng" : get_latlng(report.postal_code), "type": report.type})
+        markers.append({"name" : report.name, "latlng" : {"lat": report.lat, "lng": report.lng}, "type": report.type})
     markers = json.dumps(markers)
 
     return render(request,"CMSApp/home.html", {'report_list' : report_list, 'center' : center, 'markers' : markers, 'haze': haze, 'dengue':dengue, 'cds': cds})
@@ -49,6 +48,13 @@ def input(request):
             postal = request.POST["postal"]
             desc = request.POST["description"]
             unit = request.POST["unit"]
+            latlng = get_latlng(postal)
+            lat = latlng["lat"]
+            lng = latlng["lng"]
+            #Saving to database in Django
+            new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, lat = lat, lng = lng, description=desc, unit_number=unit)
+            new_report.save()
+
             django_dict = {}
             django_dict["Type"] = str(type1)
             django_dict["mobile"] = str(mobile)
@@ -56,9 +62,6 @@ def input(request):
             django_dict["postal"] = str(postal)
             django_dict["Description"] = str(desc)
             django_dict["name"] = str(name)
-            #Saving to database in Django
-            new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, description=desc, unit_number=unit)
-            new_report.save()
             #Sending SMS to Agency
             sender = "+12052939421"
             receiverAgency = ['+6596579895']

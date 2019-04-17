@@ -21,6 +21,9 @@ class Report(models.Model):
     time = models.DateTimeField(default=datetime.datetime.now(tz=tz))
     resolved = models.BooleanField(default=False)
     resolve_time= models.DateTimeField(default=datetime.datetime.now(tz=tz))
+    lat = models.CharField(max_length=100)
+    lng = models.CharField(max_length=100)
+
     def __str__(self):
         return "Report " + str(self.pk) + " at " + str(self.time.astimezone(tz))
 
