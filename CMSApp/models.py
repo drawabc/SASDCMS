@@ -19,7 +19,8 @@ class Report(models.Model):
     description = models.CharField(max_length=500)
     type = models.CharField(max_length=2, choices=ASSISTANCE_TYPE_CHOICES)
     time = models.DateTimeField(default=datetime.datetime.now(tz=tz))
-
+    #resolved = models.BooleanField(default=False)
+    #resolve_time= models.DateTimeField
     def __str__(self):
         return "Report " + str(self.pk) + " at " + str(self.time.astimezone(tz))
 
