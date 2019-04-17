@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card mx-auto" style="width: 45rem;" >
+    <div class="card-header " style="background-color:#fdd4c0">
+        <div class="col" align="center">
+            <h1><b>Mass messaging civilians</b></h1>
+        </div>
+    </div>
+    <div class="card-body ">
+    <form class="needs-validation" method="post"> {% csrf_token %}
+      <div class="form-group row">
+        <label for="subject" class="col-sm-2 col-form-label">Email Subject</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="subject" name="subject" placeholder="Insert Email Subject here" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="message" class="col-sm-2 col-form-label">Message</label>
+        <div class="col-sm-10">
+          <input type="textarea" class="form-control" id="message" name="message" placeholder="Insert Email message here" required>
+        </div>
+      </div>
+      <div class="row" >
+        <legend class="col-form-label col-sm-2 pt-0">Region</legend>
+        <div class="col-sm-10">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="region" id="NORTHEAST" value="NORTH-EAST" checked>
+            <label class="form-check-label" for="NORTHEAST">
+              NORTH-EAST
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="region" id="WEST" value="WEST">
+            <label class="form-check-label" for="WEST">
+              WEST
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="region" id="CENTRAL" value="CENTRAL">
+            <label class="form-check-label" for="CENTRAL">
+              CENTRAL
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="region" id="EAST" value="EAST">
+            <label class="form-check-label" for="EAST">
+              EAST
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="region" id="NORTH" value="NORTH">
+            <label class="form-check-label" for="NORTH">
+              NORTH
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+          <button id="submit" type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+{% endblock %}
