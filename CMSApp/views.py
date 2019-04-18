@@ -1,5 +1,6 @@
 import json, pytz, datetime
 import urllib.request as ur
+import pyrebase
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -10,7 +11,7 @@ from CMSApp.models import Report, CivilianData
 from apis.latitudelongitude import get_latlng
 from apis.sms_django import SMSAPI
 from apis.email_django import EmailSend
-from .forms import CivilianForm 
+from .forms import CivilianForm
 
 tz = pytz.timezone('Asia/Singapore')
 # Create your views here.
@@ -87,23 +88,28 @@ def archive(request):
 
 
 def get_server_data():
-    url = 'https://api-scheduler.herokuapp.com/'
-    url_parser = ur.urlopen(ur.Request(url))
-    info = url_parser.read()
-    json_dict = json.loads(info.decode('utf-8'))
-    return json_dict
+    config = {
+          "apiKey": "",
+          "authDomain": "",
+          "databaseURL": "https://data-storage-1205f.firebaseio.com/",
+          "storageBucket": ""
+        }
+    firebase = pyrebase.initialize_app(config)
+    db = firebase.database()
+    dict_data = dict(db.get().val())
+    return dict_data
 
 def get_cd_shelter(dict):
     if dict=={}:
         return {}
     else:
-        return dict["data_cdshelter"]
+        return dict["CD_Data"]["Data"]
 
 def get_haze_data(dict):
     if dict=={}:
         return {"location":{}, "psi":{}, "pm25":{}}
     else:
-        haze = dict["data_haze"]
+        haze = dict["Haze_Data"]
         haze_template = {}
         for key, value in haze["location"].items():
             haze_template[key] = {}
@@ -118,7 +124,7 @@ def get_dengue_data(dict):
     if dict=={}:
         return {}
     else:
-        return dict["data_dengue"]
+        return dict["Dengue_Data"]
 
 @login_required
 def manage_public(request):
