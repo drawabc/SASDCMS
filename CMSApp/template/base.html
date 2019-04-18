@@ -103,11 +103,11 @@
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
                             <div class="nav nav-tabs">
                                 <a id = "home" class="nav-item nav-link text-dark" href="{% url 'CMSApp:home' %}">Home</a>
+                                <a id = "input" class="nav-item nav-link text-dark " href="{% url 'CMSApp:input' %}">Input Report</a>
+                                <a id = "archive" class="nav-item nav-link text-dark" href="{% url 'CMSApp:archive' %}">Report Archive</a>
                                 <a id = "mass_message" class="nav-item nav-link text-dark" href="{% url 'CMSApp:mass_message' %}">Mass Message</a>
-                                <a id = "input" class="nav-item nav-link text-dark " href="{% url 'CMSApp:input' %}">Input</a>
-                                <a id = "archive" class="nav-item nav-link text-dark" href="{% url 'CMSApp:archive' %}">Archive</a>
-                                <a id = "civilian" class="nav-item nav-link text-dark" href="{% url 'CMSApp:manage' %}">Civilian</a>
-                                <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage</a>
+                                <a id = "civilian" class="nav-item nav-link text-dark" href="{% url 'CMSApp:manage' %}">Civilian Data</a>
+                                <a id = "dashboard" class="nav-item nav-link text-dark" href="{% url 'authentication:manage_dashboard' %}">Manage User</a>
                             </div>
                         </div>
                         {% if user.is_authenticated %}

@@ -59,6 +59,7 @@ def input(request):
             new_report = Report(name=name, mobile=mobile, location=location, type=type1, postal_code=postal, lat = lat, lng = lng, description=desc, unit_number=unit)
             new_report.save()
 
+            # SMS
             django_dict = {}
             django_dict["Type"] = str(type1)
             django_dict["mobile"] = str(mobile)
