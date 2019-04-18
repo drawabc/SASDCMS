@@ -124,7 +124,7 @@ def get_dengue_data(dict):
     if dict=={}:
         return {}
     else:
-        return dict["Dengue_Data"]
+        return dict["Dengue_Data"]["polygon_data"]
 
 @login_required
 def manage_public(request):
