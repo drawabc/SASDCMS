@@ -187,7 +187,7 @@ def mass_message(request):
     if request.method == "POST":
         #Send a mass Email out
         subject = request.POST["subject"]
-        message = request.POST["messge"]
+        message = request.POST["message"]
         region = request.POST["region"]
         region_civ_data = CivilianData.objects.filter(region__exact=region)
         server = EmailSend.startServer()
