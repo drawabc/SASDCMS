@@ -7,7 +7,7 @@ attrs==19.1.0
 beautifulsoup4==4.7.1
 billiard==3.6.0.0
 bs4==0.0.1
-certifi==2018.11.29
+certifi==2022.12.7
 chardet==3.0.4
 dj-database-url==0.4.2
 Django==1.11.17
